@@ -1,3 +1,15 @@
-<h1>
-  {{title}}
-</h1>
+<div class="col-lg-12">
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Heading</div>
+      <div class="panel-body">
+        <ngx-numeric-datetime-picker [options]="ngxNumericDateTimePickerOption"
+                                     (select-date)="getDate($event)">
+        </ngx-numeric-datetime-picker>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

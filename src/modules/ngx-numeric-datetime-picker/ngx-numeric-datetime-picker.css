@@ -1,0 +1,4 @@
+/*Override input ngx-datetime-picker*/
+input.ngx-datetime-picker-display:read-only {
+  background-color: white !important;
+}
