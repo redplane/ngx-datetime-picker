@@ -1,0 +1,31 @@
+/**
+ * Created by Linh Nguyen on 6/2/2017.
+ */
+export class NgxDateTimePickerOption{
+
+  //#region Properties
+
+  // Title of days in week (From sunday - saturday)
+  public daysTitle: Array<string>;
+
+  // Title of months in year (From january - february).
+  public monthsTitle: Array<string>;
+
+  // Initial date which calendar should start from.
+  public initial: Date;
+
+  // Whether today should be highlight.
+  public bHighLightToday: boolean;
+
+  //#endregion
+
+  //#region Constructor
+
+  // Initiate option with default settings.
+  public constructor(){
+    this.daysTitle = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    this.monthsTitle = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  }
+
+  //#endregion
+}

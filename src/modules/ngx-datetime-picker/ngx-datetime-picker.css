@@ -1,0 +1,27 @@
+.calendar {
+  max-width: 280px;
+  width: 280px;
+}
+
+.calendar-container {
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.calendar-container tbody tr td {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.calendar-container .day {
+  border: none;
+}
+
+.day:hover {
+  background-color: #a4ff00;
+}
+
+.day div{
+  cursor: pointer;
+}
