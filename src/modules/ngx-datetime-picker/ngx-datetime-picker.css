@@ -1,27 +1,61 @@
 .calendar {
-  max-width: 280px;
-  width: 280px;
+  background-color: whitesmoke;
 }
 
-.calendar-container {
-  border-collapse: collapse;
+.calendar button{
+  border-radius: 0;
+}
+
+/* Weekdays (Mon-Sun) */
+.weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
   text-align: center;
 }
 
-.calendar-container tbody tr td {
-  width: 40px;
-  height: 40px;
-  vertical-align: middle;
+.weekdays table {
+  margin-bottom: 0 !important;
 }
 
-.calendar-container .day {
+.weekdays td {
+  display: inline-block;
+  color: #666;
+  text-align: center;
+}
+
+/* Days (1-31) */
+
+.day, .year, .decade {
   border: none;
+  margin: 0;
+  text-align: center;
 }
 
-.day:hover {
-  background-color: #a4ff00;
+.day.mark, .year.mark, .decade.mark {
+  font-weight: bold;
+  background-color: #89C4F4;
 }
 
-.day div{
+td.day[disabled], td.year[disabled], td.decade[disabled] {
+  background-color: #6C7A89;
+  cursor: not-allowed !important;
+}
+
+td.day:not(disabled), td.year:not(disabled), td.year:not(disabled) {
   cursor: pointer;
+}
+
+/* Class for current date.*/
+.day .today:not(disabled) {
+  background-color: #337ab7;
+  color: white;
+  font-weight: bold;
+}
+
+/* Style of current year */
+.year.current:not(disabled) {
+  background-color: #337ab7;
+  color: white;
+  font-weight: bold;
 }

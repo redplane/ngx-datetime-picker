@@ -1,90 +1,119 @@
-<div class="calendar">
-    <div class="datepicker-days">
-      <table class="calendar-container table table-condensed">
-        <thead>
-        <tr>
-          <th class="prev"
-              (click)="updateMonth(-1)">
-            <button class="btn btn-default btn-info">«</button>
-          </th>
-          <th colspan="5"
-              class="text-center">
-            <button class="btn btn-primary btn-block">{{options.monthsTitle[date.getMonth()]}} {{date.getFullYear()}}</button>
-          </th>
-          <th class="next"
-              (click)="updateMonth(1)">
-            <button class="btn btn-default btn-info">»</button>
-          </th>
-        </tr>
-        <tr>
-          <th class="dow" *ngFor="let dayTitle of options.daysTitle">{{dayTitle}}</th>
-        </tr>
-        </thead>
-        <tbody >
-        <tr *ngFor="let week of matrix; let i = index;">
-          <td *ngFor="let day of matrix[i]"
-              class="day">
-            <div *ngIf="day != null">
-              {{day.getDate()}}
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="datepicker-months" style="display: none;">
-      <table class="table table-condensed">
-        <thead>
-        <tr>
-          <th class="prev" style="visibility: visible;">«</th>
-          <th colspan="5" class="datepicker-switch">2021</th>
-          <th class="next" style="visibility: visible;">»</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
-            class="month">Mar</span><span class="month">Apr</span><span class="month">May</span><span
-            class="month">Jun</span><span class="month">Jul</span><span class="month">Aug</span><span
-            class="month">Sep</span><span class="month">Oct</span><span class="month">Nov</span><span
-            class="month">Dec</span></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-          <th colspan="7" class="today" style="display: none;">Today</th>
-        </tr>
-        <tr>
-          <th colspan="7" class="clear" style="display: none;">Clear</th>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-    <div class="datepicker-years" style="display: none;">
-      <table class="table table-condensed">
-        <thead>
-        <tr>
-          <th class="prev" style="visibility: visible;">«</th>
-          <th colspan="5" class="datepicker-switch">2020-2029</th>
-          <th class="next" style="visibility: visible;">»</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td colspan="7"><span class="year old">2019</span><span class="year">2020</span><span class="year">2021</span><span
-            class="year">2022</span><span class="year">2023</span><span class="year">2024</span><span
-            class="year">2025</span><span class="year">2026</span><span class="year">2027</span><span
-            class="year">2028</span><span class="year">2029</span><span class="year new">2030</span></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-          <th colspan="7" class="today" style="display: none;">Today</th>
-        </tr>
-        <tr>
-          <th colspan="7" class="clear" style="display: none;">Clear</th>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
+<div class="calendar"
+     [ngSwitch]="calendarSelectionMode">
+
+  <!--Calendar header control-->
+  <table class="month-year table table-condensed">
+    <tbody>
+    <tr class="calendar-title">
+
+      <!--Date selection mode-->
+      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.day">
+        <td class="arrow previous">
+          <!--Decrease day by one-->
+          <button class="btn btn-block btn-default"
+                  (click)="updateMonth(-1)">
+            &#10094;
+          </button>
+        <td>
+          <button class="btn btn-info btn-block"
+                  (click)="clickTitle()">
+            {{options.monthsTitle[date.getMonth()]}} {{date.getFullYear()}}
+          </button>
+        </td>
+        <td class="arrow next">
+          <button class="btn btn-block btn-default" (click)="updateMonth(1)">&#10095;</button>
+        </td>
+      </ng-container>
+
+      <!--Month selection mode-->
+      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.month">
+        <td>
+          <button class="btn btn-info btn-block"
+                  (click)="clickTitle()">
+            {{date.getFullYear()}}
+          </button>
+        </td>
+      </ng-container>
+
+      <!--Year selection mode-->
+      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.year">
+        <td class="arrow previous">
+          <!--Decrease day by one-->
+          <button class="btn btn-block btn-default"
+                  (click)="updateYearRange(yearRange.from - options.yearSelectionRange, yearRange.to - options.yearSelectionRange)">
+            &#10094;
+          </button>
+        <td>
+          <button class="btn btn-info btn-block"
+                  disabled="disabled">
+            {{yearRange.from}} - {{yearRange.to}}
+          </button>
+        </td>
+        <td class="arrow next">
+          <button class="btn btn-block btn-default"
+                  (click)="updateYearRange(yearRange.from + options.yearSelectionRange, yearRange.to + options.yearSelectionRange)">
+            &#10095;
+          </button>
+        </td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--Calendar selector - Year selection-->
+  <table class="table table-condensed" *ngSwitchCase="CalendarSelectionMode.year">
+    <tbody class="years">
+    <tr *ngFor="let matrix of yearsMatrix">
+      <td *ngFor="let year of matrix"
+          class="year">
+        <button class="btn btn-block"
+                [class.btn-primary]="year == getCurrentYear()"
+                [class.btn-default]="year != getCurrentYear()"
+                (click)="selectYear(year)">
+          {{year}}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--Calendar selector - Month selection-->
+  <table class="table table-condensed"
+         *ngSwitchCase="CalendarSelectionMode.month">
+    <tbody class="months">
+    <tr *ngFor="let matrix of monthsMatrix">
+      <td *ngFor="let month of matrix"
+          class="month">
+        <button class="btn btn-block"
+                [class.btn-primary]="isCurrentMonth(month -1)"
+                [class.btn-default]="!isCurrentMonth(month -1)"
+                (click)="selectMonth(month - 1)">
+          {{options.monthsTitle[month - 1]}}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--Week days selector - Date selection -->
+  <table class="table table-condensed"
+         *ngSwitchCase="CalendarSelectionMode.day">
+    <thead>
+    <tr class="weekdays">
+      <th *ngFor="let dayTitle of options.daysTitle" class="text-center">{{dayTitle}}</th>
+    </tr>
+    </thead>
+    <tbody class="days">
+    <tr *ngFor="let week of datesMatrix; let i = index;">
+      <td *ngFor="let day of datesMatrix[i]"
+          class="day">
+        <button *ngIf="day != null"
+                class="btn btn-default btn-block"
+                [class.today]="getToday(day)">
+          {{day.getDate()}}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
