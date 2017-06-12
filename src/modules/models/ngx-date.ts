@@ -138,6 +138,48 @@ export class NgxDate{
   }
 
   /*
+  * Get hour
+  * */
+  public getHour(): number{
+    return this.hour;
+  }
+
+  /*
+  * Set hour.
+  * */
+  public setHour(iHour: number): void{
+    this.hour = iHour;
+  }
+
+  /*
+  * Get minute.
+  * */
+  public getMinute(): number{
+    return this.minute;
+  }
+
+  /*
+  * Set minute.
+  * */
+  public setMinute(iMinute: number): void{
+    this.minute = iMinute;
+  }
+
+  /*
+  * Get second.
+  * */
+  public getSecond(): number{
+    return this.second;
+  }
+
+  /*
+  * Set second.
+  * */
+  public setSecond(iSecond: number): void{
+    this.second = iSecond;
+  }
+
+  /*
    * Get max days of a month.
    * */
   private getMaxDays(year: number, month: number): number {

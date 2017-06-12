@@ -104,6 +104,7 @@ export class NgxDateTimePickerComponent implements OnInit {
     if (this.options != null && this.options.initial != null) {
       // TODO: Implement.
       this.updateDate();
+    } else {
     }
 
     // Get months matrix.
@@ -447,8 +448,12 @@ export class NgxDateTimePickerComponent implements OnInit {
     });
   }
 
+  /*
+  * Format datetime.
+  * */
   private format(date: Date): string{
     return moment(date).format(this.options.format);
   }
+
   //#endregion
 }
