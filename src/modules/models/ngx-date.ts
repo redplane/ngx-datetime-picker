@@ -22,6 +22,7 @@ export class NgxDate{
   // Minute.
   public minute: number;
 
+  // Second
   public second: number;
 
   //#endregion
@@ -35,8 +36,8 @@ export class NgxDate{
     this.year = null;
     this.month = null;
     this.day = null;
-    this.hour = null;
-    this.minute = null;
+    this.hour = 0;
+    this.minute = 0;
   }
 
   //#endregion
@@ -55,7 +56,7 @@ export class NgxDate{
   }
 
   // Get date bound to model.
-  public getDate(): Date{
+  public toDateTime(): Date{
 
     if (this.year == null)
       return null;
@@ -70,7 +71,7 @@ export class NgxDate{
     let iMonth = this.month -1;
 
     date.setFullYear(this.year, iMonth, this.day);
-    date.setHours(this.hour, this.minute, this.second, 0);
+    date.setHours(this.hour == null ? 0 : this.hour, this.minute == null ? 0 : this.minute, this.second == null ? 0 : this.second, 0);
     return date;
   }
 

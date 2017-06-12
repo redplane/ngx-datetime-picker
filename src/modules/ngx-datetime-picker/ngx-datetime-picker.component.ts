@@ -1,13 +1,15 @@
 /**
  * Created by Linh Nguyen on 6/1/2017.
  */
-import {Component, ElementRef, Input, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, Output} from "@angular/core";
 import {NgxDateTimePickerOption} from "./ngx-datetime-picker-option";
 import * as _ from 'lodash';
 import {CalendarSelectionMode} from "./enumerations/calendar-selection-mode";
 import {Range} from "./models/Range";
 import {NgxDate} from "../models/ngx-date";
 import {reduce} from "rxjs/operator/reduce";
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'ngx-datetime-picker',
@@ -51,6 +53,12 @@ export class NgxDateTimePickerComponent implements OnInit {
   private CalendarSelectionMode = CalendarSelectionMode;
 
   /*
+  * This event is fired when time is selected.
+  * */
+  @Output('select-time')
+  private selectTimeEventEmitter: EventEmitter<NgxDate>;
+
+  /*
    * Current time of the system.
    * */
   private currentTime: Date;
@@ -66,6 +74,8 @@ export class NgxDateTimePickerComponent implements OnInit {
     this.yearsMatrix = new Array<Array<number>>();
     this.monthsMatrix = new Array<Array<number>>();
     this.date = new NgxDate();
+
+    this.selectTimeEventEmitter = new EventEmitter<NgxDate>();
   }
 
   //#endregion
@@ -299,6 +309,8 @@ export class NgxDateTimePickerComponent implements OnInit {
 
     // Close drop-down menu.
     this.selection = _.cloneDeep(this.date);
+    this.selectTimeEventEmitter.emit(this.selection);
+
     this.closeDropDown();
   }
   /*
@@ -435,5 +447,8 @@ export class NgxDateTimePickerComponent implements OnInit {
     });
   }
 
+  private format(date: Date): string{
+    return moment(date).format(this.options.format);
+  }
   //#endregion
 }

@@ -3,7 +3,7 @@
   <div class="input-group dropdown-toggle"
        data-toggle="dropdown">
     <div class="form-control">
-      <span *ngIf="selection != null">{{selection.getDate()}}</span>
+      <span *ngIf="selection != null">{{ format(selection.toDateTime()) }}</span>
     </div>
     <span class="input-group-addon">
       <span class="glyphicon glyphicon-calendar"></span>

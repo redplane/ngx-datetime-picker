@@ -12,7 +12,7 @@
   -webkit-appearance: none;
   cursor: pointer;
   display: block;
-  width: 8px;
+  width: 0;
   color: #333;
   text-align: center;
   position: relative;

@@ -24,6 +24,12 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   // Max hour.
   private iMaxHour: number = 23;
 
+  // Minimum month of year.
+  private iMinMonth: number = 1;
+
+  // Maximum month of year.
+  private iMaxMonth: number = 12;
+
   // Numeric datetime picker option.
   @Input('options')
   private options: NgxNumericDateTimePickerOption;
@@ -37,6 +43,10 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   // Input box of day.
   @ViewChild('dayBox')
   private dayBox: ElementRef;
+
+  // Input box of month.
+  @ViewChild('monthBox')
+  private monthBox: ElementRef;
 
   // Input box of year.
   @ViewChild('yearBox')
@@ -70,9 +80,6 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   // Event which is fired when a date is selected.
   @Output('select-date')
   private readonly selectDateEmitter: EventEmitter<Date>;
-
-  // Enumeration reflection.
-  private readonly Meridiem = Meridiem;
 
   //#endregion
 
@@ -162,10 +169,10 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
    * */
   private updateMonth(month: number): void {
     let iMonth = this.time.month + month;
-    if (iMonth > 11)
-      iMonth = 0;
-    else if (iMonth < 0)
-      iMonth = 11;
+    if (iMonth > this.iMaxMonth)
+      iMonth = this.iMinMonth;
+    else if (iMonth < this.iMinMonth)
+      iMonth = this.iMaxMonth;
 
     this.time.month = iMonth;
   }
@@ -203,15 +210,15 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
             if (!iYear)
               throw 'Invalid year';
 
-            if (iYear < 0)
-              this.time.year = 0;
-            else if (iYear > 9999)
-              this.time.year = 9999;
+            if (iYear < this.options.iMinYear)
+              this.time.year = this.options.iMinYear;
+            else if (iYear > this.options.iMaxYear)
+              this.time.year = this.options.iMaxYear;
             else
               this.time.year = iYear;
 
           } catch (exception) {
-            this.time.year = 0;
+            this.time.year = this.options.iMinYear;
           }
           break;
 
@@ -223,15 +230,15 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
             if (!iMonth)
               throw 'Invalid month';
 
-            if (iMonth < 0)
-              this.time.month = 0;
-            else if (iMonth > 11)
-              this.time.month = 11;
+            if (iMonth < this.iMinMonth)
+              this.time.month = this.iMinMonth;
+            else if (iMonth > this.iMaxMonth)
+              this.time.month = this.iMaxMonth;
             else
               this.time.month = iMonth;
 
           } catch (exception) {
-            this.time.month = 0;
+            this.time.month = this.iMinMonth;
           }
           break;
 
@@ -286,7 +293,7 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
             else if (iMinute > 59)
               this.time.minute = 59;
             else
-              this.time.minute = 0;
+              this.time.minute = iMinute;
 
           } catch (exception) {
             this.time.minute = 0;
@@ -330,6 +337,10 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
         this.dayBox.nativeElement.focus();
         break;
 
+      case NgxDateTimePickerEditorMode.month:
+        this.monthBox.nativeElement.focus();
+        break;
+
       case NgxDateTimePickerEditorMode.year:
         this.yearBox.nativeElement.focus();
         break;
@@ -371,7 +382,8 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
     this.cancelFocus(this.editorMode);
 
     // Emit event.
-    this.selectDateEmitter.emit(this.time.getDate());
+    this.selectDateEmitter.emit(this.time.toDateTime());
   }
+
   //#endregion
 }

@@ -29,6 +29,9 @@ export class NgxDateTimePickerOption{
   // Number of years per row.
   public yearsPerRow: number;
 
+  // Format of time display.
+  public format: string;
+
   //#endregion
 
   //#region Constructor
@@ -42,6 +45,7 @@ export class NgxDateTimePickerOption{
     this.highLightCurrentYear = true;
     this.highLightCurrentMonth = true;
     this.highLightCurrentDay = true;
+    this.format = 'YYYY-MM-DD';
   }
 
   //#endregion

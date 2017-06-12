@@ -1,5 +1,4 @@
-<form #f="ngForm"
-      class="input-group ngx-numeric-datetime-picker">
+<div class="input-group ngx-numeric-datetime-picker">
   <div class="form-control dropdown-toggle"
        data-toggle="dropdown">
   </div>
@@ -23,15 +22,26 @@
               <span></span>
             </div>
 
-            <div class="mtr-content">
+            <div class="mtr-content"
+                 (click)="focus(NgxDateTimePickerEditorMode.month)">
+              <input #monthBox
+                     type="number"
+                     class="mtr-input months"
+                     placeholder="Months"
+                     max="12"
+                     min="1"
+                     [(ngModel)]="time.month"
+                     *ngIf="editorMode == NgxDateTimePickerEditorMode.month"
+                     (blur)="cancelFocus(NgxDateTimePickerEditorMode.month, true)">
+
               <div class="mtr-values">
                 <div class="mtr-default-value-holder"
                      *ngIf="editorMode != NgxDateTimePickerEditorMode.month">
                   <div class="mtr-default-value has-name">
-                    {{this.time.month + 1}}
+                    {{this.time.month}}
                   </div>
                   <div class="mtr-default-value-name">
-                    {{this.monthNames[this.time.month]}}
+                    {{this.monthNames[this.time.month - 1]}}
                   </div>
                 </div>
               </div>
@@ -63,12 +73,14 @@
 
                 <div class="mtr-default-value-holder"
                      *ngIf="editorMode != NgxDateTimePickerEditorMode.day">
+                  <ng-container *ngIf="this.time != null && this.time.toDateTime() != null">
                   <div class="mtr-default-value has-name">
-                    {{this.time.getDate().getDate()}}
+                      {{this.time.toDateTime().getDate()}}
                   </div>
                   <div class="mtr-default-value-name">
-                    {{this.dayNames[this.time.getDate().getDay()]}}
+                    {{this.dayNames[this.time.toDateTime().getDay()]}}
                   </div>
+                  </ng-container>
                 </div>
               </div>
             </div>
@@ -81,6 +93,7 @@
           <!--Year-->
           <div class="mtr-input-slider">
             <div class="mtr-arrow up"
+                 disabled="time.year >= options.iMaxYear"
                  (click)="updateYear(1)">
               <span></span>
             </div>
@@ -224,7 +237,7 @@
     </li>
   </ul>
 
-</form>
+</div>
 
 
 

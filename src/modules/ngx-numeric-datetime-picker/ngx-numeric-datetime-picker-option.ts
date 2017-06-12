@@ -11,5 +11,18 @@ export class NgxNumericDateTimePickerOption{
   // Date should be set to component when it has been initiated.
   public initial: Date;
 
+  public iMinYear: number;
+
+  public iMaxYear: number;
+
+  //#endregion
+
+  //#region Constructor
+
+  public constructor(){
+    this.iMinYear = 0;
+    this.iMaxYear = 9999;
+  }
+
   //#endregion
 }
