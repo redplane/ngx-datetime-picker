@@ -1,9 +1,10 @@
-<div class="input-group">
-  <input class="ngx-datetime-picker-display form-control dropdown-toggle"
-         data-toggle="dropdown"
-         readonly="readonly">
+<form #f="ngForm"
+      class="input-group ngx-numeric-datetime-picker">
+  <div class="form-control dropdown-toggle"
+       data-toggle="dropdown">
+  </div>
   <span class="input-group-addon dropdown-toggle"
-        data-toggle="dropdown" >
+        data-toggle="dropdown">
     <span class="glyphicon glyphicon-calendar"></span>
   </span>
   <ul class="dropdown-menu"
@@ -22,18 +23,8 @@
               <span></span>
             </div>
 
-            <div class="mtr-content"
-                 (click)="focus(NgxDateTimePickerEditorMode.month)">
-
+            <div class="mtr-content">
               <div class="mtr-values">
-                <input #monthBox
-                       class="mtr-input months"
-                       maxlength="2"
-                       placeholder="Month"
-                       [(ngModel)]="time.month"
-                       (blur)="cancelFocus(NgxDateTimePickerEditorMode.month, true)"
-                       *ngIf="editorMode == NgxDateTimePickerEditorMode.month">
-
                 <div class="mtr-default-value-holder"
                      *ngIf="editorMode != NgxDateTimePickerEditorMode.month">
                   <div class="mtr-default-value has-name">
@@ -45,6 +36,7 @@
                 </div>
               </div>
             </div>
+
             <div class="mtr-arrow down"
                  (click)="updateMonth(-1)">
               <span></span>
@@ -61,11 +53,11 @@
                  (click)="focus(NgxDateTimePickerEditorMode.day)">
               <div class="mtr-values">
                 <input #dayBox
-                       type="text"
+                       type="number"
                        class="mtr-input dates"
                        placeholder="Day"
+                       min="1"
                        [(ngModel)]="time.day"
-                       maxlength="2"
                        (blur)="cancelFocus(NgxDateTimePickerEditorMode.day, true)"
                        *ngIf="editorMode == NgxDateTimePickerEditorMode.day">
 
@@ -95,10 +87,11 @@
             <div class="mtr-content"
                  (click)="focus(NgxDateTimePickerEditorMode.year)">
               <input #yearBox
-                     type="text"
+                     type="number"
                      class="mtr-input years"
                      placeholder="Year"
-                     maxlength="4"
+                     max="9999"
+                     min="0"
                      [(ngModel)]="time.year"
                      *ngIf="editorMode == NgxDateTimePickerEditorMode.year"
                      (blur)="cancelFocus(NgxDateTimePickerEditorMode.year, true)">
@@ -135,10 +128,11 @@
             <div class="mtr-content"
                  (click)="focus(NgxDateTimePickerEditorMode.hour)">
               <input #hourBox
-                     type="text"
+                     type="number"
                      class="mtr-input hours"
                      [(ngModel)]="time.hour"
-                     maxlength="2"
+                     min="0"
+                     max="23"
                      *ngIf="editorMode == NgxDateTimePickerEditorMode.hour"
                      (blur)="cancelFocus(NgxDateTimePickerEditorMode.hour, true)">
               <div class="mtr-values"
@@ -165,10 +159,11 @@
             <div class="mtr-content"
                  (click)="focus(NgxDateTimePickerEditorMode.minute)">
               <input #minuteBox
-                     type="text"
+                     type="number"
                      class="mtr-input minutes"
                      [(ngModel)]="time.minute"
-                     maxlength="2"
+                     min="0"
+                     max="59"
                      *ngIf="editorMode == NgxDateTimePickerEditorMode.minute"
                      (blur)="cancelFocus(NgxDateTimePickerEditorMode.minute, true)">
               <div class="mtr-values"
@@ -186,35 +181,50 @@
             </div>
           </div>
 
-          <!--AM / PM-->
+          <!--Second-->
           <div class="mtr-input-slider">
             <div class="mtr-arrow up"
-                 (click)="updateHour(12)">
+                 (click)="updateSecond(1)">
               <span></span>
             </div>
-            <div class="mtr-content">
-              <div class="mtr-values">
+            <div class="mtr-content"
+                 (click)="focus(NgxDateTimePickerEditorMode.second)">
+              <input #secondBox
+                     class="mtr-input minutes"
+                     [(ngModel)]="time.second"
+                     type="number"
+                     min="0"
+                     max="59"
+                     *ngIf="editorMode == NgxDateTimePickerEditorMode.second"
+                     (blur)="cancelFocus(NgxDateTimePickerEditorMode.second, true)">
+              <div class="mtr-values"
+                   *ngIf="editorMode != NgxDateTimePickerEditorMode.second">
                 <div class="mtr-default-value-holder">
                   <div class="mtr-default-value">
-                    <span *ngIf="time.hour >= 12">PM</span>
-                    <span *ngIf="time.hour < 12">AM</span>
+                    {{time.second}}
                   </div>
                 </div>
               </div>
             </div>
             <div class="mtr-arrow down"
-                 (click)="updateHour(-12)">
+                 (click)="updateSecond(-1)">
               <span></span>
             </div>
           </div>
         </div>
 
-        <div class="mtr-clearfix"></div>
+        <!--Footer-->
+        <div class="footer">
+          <button class="btn btn-info btn-block"
+                  (click)="confirmSelection()">
+            Ok
+          </button>
+        </div>
       </div>
     </li>
   </ul>
 
-</div>
+</form>
 
 
 

@@ -1,4 +1,37 @@
 /*Override input ngx-datetime-picker*/
-input.ngx-datetime-picker-display:read-only {
-  background-color: white !important;
+.footer {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.footer button {
+  border-radius: 0 !important;
+}
+
+.ngx-numeric-datetime-picker input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: block;
+  width: 8px;
+  color: #333;
+  text-align: center;
+  position: relative;
+}
+
+.ngx-numeric-datetime-picker input[type=number]::-webkit-inner-spin-button:before,
+.ngx-numeric-datetime-picker input[type=number]::-webkit-inner-spin-button:after {
+  content: "^";
+  position: absolute;
+  right: 0;
+  font-family: monospace;
+  line-height: 0;
+}
+
+.ngx-numeric-datetime-picker input[type=number]::-webkit-inner-spin-button:before {
+  top: 0;
+}
+
+.ngx-numeric-datetime-picker input[type=number]::-webkit-inner-spin-button:after {
+  bottom: 0;
+  -webkit-transform: rotate(180deg);
 }

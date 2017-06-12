@@ -15,12 +15,12 @@ export class AppComponent {
 
     let initialDate = new Date();
     initialDate.setFullYear(1000);
-    this.ngxNumericDateTimePickerOption.initialDate = initialDate;
+    this.ngxNumericDateTimePickerOption.initial = initialDate;
   }
   title = 'app works!';
 
   public getDate(date: Date): void{
-    if (date == null)
-      return;
+
+    console.log(date);
   }
 }

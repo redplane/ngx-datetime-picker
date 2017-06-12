@@ -6,5 +6,6 @@ export enum NgxDateTimePickerEditorMode{
   month,
   day,
   hour,
-  minute
+  minute,
+  second
 }

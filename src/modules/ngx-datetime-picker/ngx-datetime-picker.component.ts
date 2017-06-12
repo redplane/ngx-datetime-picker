@@ -1,11 +1,13 @@
 /**
  * Created by Linh Nguyen on 6/1/2017.
  */
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, ElementRef, Input, OnInit, ViewChild} from "@angular/core";
 import {NgxDateTimePickerOption} from "./ngx-datetime-picker-option";
 import * as _ from 'lodash';
 import {CalendarSelectionMode} from "./enumerations/calendar-selection-mode";
 import {Range} from "./models/Range";
+import {NgxDate} from "../models/ngx-date";
+import {reduce} from "rxjs/operator/reduce";
 
 @Component({
   selector: 'ngx-datetime-picker',
@@ -21,8 +23,14 @@ export class NgxDateTimePickerComponent implements OnInit {
   @Input('options')
   private options: NgxDateTimePickerOption;
 
+  @ViewChild('dropDownControl')
+  private dropDownControl: ElementRef;
+
   // Instance store date object.
-  private date: Date;
+  private date: NgxDate;
+
+  // Instance which represent date selection.
+  private selection: NgxDate;
 
   // Date matrix which is used for drawing calendar.
   private datesMatrix: Array<Array<Date>>;
@@ -57,11 +65,7 @@ export class NgxDateTimePickerComponent implements OnInit {
     this.datesMatrix = new Array<Array<Date>>();
     this.yearsMatrix = new Array<Array<number>>();
     this.monthsMatrix = new Array<Array<number>>();
-
-    this.calendarSelectionMode = CalendarSelectionMode.year;
-    this.currentTime = new Date();
-
-    this.yearRange = new Range<number>();
+    this.date = new NgxDate();
   }
 
   //#endregion
@@ -71,35 +75,29 @@ export class NgxDateTimePickerComponent implements OnInit {
   // This event is called when component has been initiated successfully.
   public ngOnInit(): void {
 
+    // Set default calendar selection mode.
+    this.calendarSelectionMode = CalendarSelectionMode.year;
+
+    // Get current system time.
+    this.currentTime = new Date();
+
+    // Initiate year range.
+    this.yearRange = new Range<number>();
+
     // Calculate year range.
     let iYear = this.currentTime.getFullYear();
     this.yearRange.from = iYear;
     this.yearRange.to = iYear + this.options.yearSelectionRange;
-
-    // Calculate month matrix.
-    let iMonth = 1;
-    let iMonthRowIndex = 0;
-    while (iMonth < 13){
-
-      if (this.monthsMatrix[iMonthRowIndex] == null)
-        this.monthsMatrix[iMonthRowIndex] = new Array<number>();
-
-      this.monthsMatrix[iMonthRowIndex].push(iMonth);
-
-      if (iMonth % 3 == 0)
-        iMonthRowIndex++;
-
-      iMonth++;
-    }
+    this.yearsMatrix = this.getYearsMatrix(this.yearRange, this.options.yearsPerRow);
 
     // Calculate initial date.
-    if (this.options != null && this.options.initial != null)
-      this.updateDate(_.cloneDeep(this.options.initial));
-    else
-      this.updateDate(new Date());
+    if (this.options != null && this.options.initial != null) {
+      // TODO: Implement.
+      this.updateDate();
+    }
 
-    // Set current date to first day of month.
-    this.date.setDate(this.getMonthFirstDay());
+    // Get months matrix.
+    this.monthsMatrix = this.getMonthsMatrix();
   }
 
   // Get first day of month.
@@ -117,8 +115,7 @@ export class NgxDateTimePickerComponent implements OnInit {
   /*
    * Set value to component date.
    * */
-  public updateDate(date: Date) {
-    this.date = date;
+  public updateDate() {
 
     switch (this.calendarSelectionMode) {
       case CalendarSelectionMode.year:
@@ -126,24 +123,23 @@ export class NgxDateTimePickerComponent implements OnInit {
         this.datesMatrix = null;
         break;
 
-      default:
+      case CalendarSelectionMode.day:
         // Get list of dates which can be shown upon calendar.
-        this.datesMatrix = this.getDatesMatrix(this.date);
+        this.datesMatrix = this.getDatesMatrix(this.date.year, this.date.month);
         this.yearsMatrix = null;
         break;
 
     }
-    this.datesMatrix = this.getDatesMatrix(this.date);
   }
 
   /*
    * Get datesMatrix of date which should be shown upon calendar in date selection mode.
    * */
-  private getDatesMatrix(input: Date): Array<Array<Date>> {
+  private getDatesMatrix(year: number, month: number): Array<Array<Date>> {
 
     // Get date datesMatrix.
-    let date: Date = _.cloneDeep(input);
-    date.setDate(1);
+    let date: Date = new Date();
+    date.setFullYear(year, month, 1);
 
     // Matrix of calendar.
     let matrix: Array<Array<Date>> = new Array<Array<Date>>();
@@ -168,10 +164,11 @@ export class NgxDateTimePickerComponent implements OnInit {
       }
 
       // Copy date instance.
-      let current = _.cloneDeep(date);
+      let current:Date = _.cloneDeep(date);
 
       // Update date.
       current.setDate(iDay);
+      current.setHours(0, 0, 0, 0);
 
       // Add date to list.
       matrix[iWeek].push(current);
@@ -209,6 +206,31 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
+  * Get months matrix.
+  * */
+  private getMonthsMatrix(): Array<Array<number>>{
+    // Calculate months matrix.
+    let iMonth = 1;
+    let iMonthRowIndex = 0;
+    let monthsMatrix: Array<Array<number>> = new Array<Array<number>>();
+
+    while (iMonth < 13){
+
+      if (monthsMatrix[iMonthRowIndex] == null)
+        monthsMatrix[iMonthRowIndex] = new Array<number>();
+
+      monthsMatrix[iMonthRowIndex].push(iMonth);
+
+      if (iMonth % 3 == 0)
+        iMonthRowIndex++;
+
+      iMonth++;
+    }
+
+    return monthsMatrix;
+  }
+
+  /*
    * Check whether the date is today or not.
    * */
   private getToday(date: Date): boolean {
@@ -217,7 +239,7 @@ export class NgxDateTimePickerComponent implements OnInit {
     if (date == null)
       return false;
 
-    return (date.getFullYear() == this.currentTime.getFullYear() && date.getMonth() == this.currentTime.getMonth() && date.getDate() == this.currentTime.getDate());
+    return (date.getFullYear() == this.currentTime.getFullYear() && date.getMonth() - 1 == this.currentTime.getMonth() && date.getDate() == this.currentTime.getDate());
   }
 
   /**
@@ -227,10 +249,8 @@ export class NgxDateTimePickerComponent implements OnInit {
   private updateMonth(month: number) {
     let iMonth = this.date.getMonth();
     iMonth += month;
-    let date = _.cloneDeep(this.date);
-    date.setMonth(iMonth);
-
-    this.updateDate(date);
+    this.date.setMonth(iMonth);
+    this.updateDate();
   }
 
   /*
@@ -241,17 +261,24 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
+  * Get current month in system.
+  * */
+  private getCurrentMonth(): number{
+    return this.currentTime.getMonth();
+  }
+  /*
    * Make a year be selected.
    * */
   private selectYear(year: number): void {
 
     // Set year.
-    this.date.setFullYear(year);
+    this.date.setYear(year);
 
     // Let user select day.
     this.calendarSelectionMode = CalendarSelectionMode.month;
 
-    this.updateDate(this.date);
+    // Re-draw date matrix.
+    this.updateDate();
   }
 
   /*
@@ -260,7 +287,19 @@ export class NgxDateTimePickerComponent implements OnInit {
   private selectMonth(month: number): void{
     this.date.setMonth(month);
     this.calendarSelectionMode = CalendarSelectionMode.day;
-    this.updateDate(this.date);
+    this.updateDate();
+  }
+
+  /*
+  * Select the specific date.
+  * */
+  private selectDay(day: number): void{
+    this.date.setDay(day);
+    this.updateDate();
+
+    // Close drop-down menu.
+    this.selection = _.cloneDeep(this.date);
+    this.closeDropDown();
   }
   /*
   * Update year range.
@@ -292,7 +331,7 @@ export class NgxDateTimePickerComponent implements OnInit {
         break;
     }
 
-    this.updateDate(this.date);
+    this.updateDate();
   }
 
   /*
@@ -301,7 +340,7 @@ export class NgxDateTimePickerComponent implements OnInit {
   private isCurrentMonth(month: number): boolean{
 
     // Year is different.
-    if (this.date.getFullYear() != this.currentTime.getFullYear())
+    if (this.date.getYear() != this.currentTime.getFullYear())
       return false;
 
     if (this.currentTime.getMonth() != month)
@@ -309,5 +348,92 @@ export class NgxDateTimePickerComponent implements OnInit {
 
     return true;
   }
+
+  /*
+  * This callback is fired when user clicks on drop down menu.
+  * */
+  private clickDropDownMenu(mouseEvent: MouseEvent): void{
+    mouseEvent.stopPropagation();
+    return;
+  }
+
+  /*
+  * This function is for closing drop-down menu.
+  * */
+  private closeDropDown(): void{
+    if (this.dropDownControl == null)
+      return;
+
+    let nativeElement = this.dropDownControl.nativeElement;
+    if (nativeElement == null)
+      return;
+
+    nativeElement.classList.remove('open');
+  }
+
+  /*
+  * Get classes for year buttons.
+  * */
+  private getYearButtonClass(year: number): string{
+    let classes: Array<string> = new Array<string>();
+    classes.push('btn');
+    classes.push('btn-block');
+
+    if (this.selection != null && this.selection.getYear() == year)
+      classes.push('btn-primary');
+    else if (year == this.getCurrentYear() && this.options.highLightCurrentYear)
+      classes.push('btn-info');
+    else
+      classes.push('btn-default');
+
+    return classes.reduce((x: string, y: string) => {
+      return `${x} ${y}`;
+    });
+  }
+
+  /*
+  * Get display classes for month buttons base on specific conditions.
+  * */
+  private getMonthButtonClass(month: number): string{
+    let classes: Array<string> = new Array<string>();
+
+    if (this.selection != null && this.selection.getYear() == this.date.getYear() && month == this.selection.getMonth())
+      classes.push('btn-primary');
+    else if (this.date.getYear() == this.getCurrentYear() && month == this.getCurrentMonth() + 1 && this.options.highLightCurrentMonth)
+      classes.push('btn-info');
+    else
+      classes.push('btn-default');
+
+    // Default classes.
+    classes.push('btn');
+    classes.push('btn-block');
+
+    return classes.reduce((x: string, y: string) => {
+      return `${x} ${y}`;
+    });
+  }
+
+  /*
+   * Get display classes for month buttons base on specific conditions.
+   * */
+  private getDayClasses(date: Date): string{
+    let classes: Array<string> = new Array<string>();
+
+    // Default classes.
+    classes.push('btn');
+    classes.push('btn-block');
+
+    if (this.selection != null && this.selection.dateCompare(date) == 0)
+      classes.push('btn-primary');
+    else if (this.getToday(date) && this.options.highLightCurrentDay)
+      classes.push('btn-info');
+    else
+      classes.push('btn-default');
+
+    return classes.reduce((x: string, y: string) => {
+      return `${x} ${y}`;
+    });
+  }
+
   //#endregion
 }

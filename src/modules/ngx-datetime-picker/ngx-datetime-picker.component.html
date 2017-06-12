@@ -1,119 +1,130 @@
-<div class="calendar"
-     [ngSwitch]="calendarSelectionMode">
+<div #dropDownControl
+     class="dropdown">
+  <div class="input-group dropdown-toggle"
+       data-toggle="dropdown">
+    <div class="form-control">
+      <span *ngIf="selection != null">{{selection.getDate()}}</span>
+    </div>
+    <span class="input-group-addon">
+      <span class="glyphicon glyphicon-calendar"></span>
+    </span>
+  </div>
+  <div class="calendar dropdown-menu"
+       [ngSwitch]="calendarSelectionMode"
+       (click)="clickDropDownMenu($event)">
 
-  <!--Calendar header control-->
-  <table class="month-year table table-condensed">
-    <tbody>
-    <tr class="calendar-title">
+    <!--Calendar header control-->
+    <table class="month-year table table-condensed">
+      <tbody>
+      <tr class="calendar-title">
 
-      <!--Date selection mode-->
-      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.day">
-        <td class="arrow previous">
-          <!--Decrease day by one-->
-          <button class="btn btn-block btn-default"
-                  (click)="updateMonth(-1)">
-            &#10094;
-          </button>
-        <td>
-          <button class="btn btn-info btn-block"
-                  (click)="clickTitle()">
-            {{options.monthsTitle[date.getMonth()]}} {{date.getFullYear()}}
+        <!--Date selection mode-->
+        <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.day">
+          <td class="arrow previous">
+            <!--Decrease day by one-->
+            <button class="btn btn-block btn-default"
+                    (click)="updateMonth(-1)">
+              &#10094;
+            </button>
+          <td>
+            <button class="btn btn-info btn-block"
+                    (click)="clickTitle()">
+              {{options.monthsTitle[date.getMonth() - 1]}} {{date.getYear()}}
+            </button>
+          </td>
+          <td class="arrow next">
+            <button class="btn btn-block btn-default" (click)="updateMonth(1)">&#10095;</button>
+          </td>
+        </ng-container>
+
+        <!--Month selection mode-->
+        <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.month">
+          <td>
+            <button class="btn btn-info btn-block"
+                    (click)="clickTitle()">
+              {{date.getYear()}}
+            </button>
+          </td>
+        </ng-container>
+
+        <!--Year selection mode-->
+        <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.year">
+          <td class="arrow previous">
+            <!--Decrease day by one-->
+            <button class="btn btn-block btn-default"
+                    (click)="updateYearRange(yearRange.from - options.yearSelectionRange, yearRange.to - options.yearSelectionRange)">
+              &#10094;
+            </button>
+          <td>
+            <button class="btn btn-info btn-block"
+                    disabled="disabled">
+              {{yearRange.from}} - {{yearRange.to}}
+            </button>
+          </td>
+          <td class="arrow next">
+            <button class="btn btn-block btn-default"
+                    (click)="updateYearRange(yearRange.from + options.yearSelectionRange, yearRange.to + options.yearSelectionRange)">
+              &#10095;
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--Calendar selector - Year selection-->
+    <table class="table table-condensed" *ngSwitchCase="CalendarSelectionMode.year">
+      <tbody class="years">
+      <tr *ngFor="let matrix of yearsMatrix">
+        <td *ngFor="let year of matrix"
+            class="year">
+          <button [class]="getYearButtonClass(year)"
+                  (click)="selectYear(year)">
+            {{year}}
           </button>
         </td>
-        <td class="arrow next">
-          <button class="btn btn-block btn-default" (click)="updateMonth(1)">&#10095;</button>
-        </td>
-      </ng-container>
+      </tr>
+      </tbody>
+    </table>
 
-      <!--Month selection mode-->
-      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.month">
-        <td>
-          <button class="btn btn-info btn-block"
-                  (click)="clickTitle()">
-            {{date.getFullYear()}}
+    <!--Calendar selector - Month selection-->
+    <table class="table table-condensed"
+           *ngSwitchCase="CalendarSelectionMode.month">
+      <tbody class="months">
+      <tr *ngFor="let matrix of monthsMatrix">
+        <td *ngFor="let month of matrix"
+            class="month">
+          <button [class]="getMonthButtonClass(month)"
+                  (click)="selectMonth(month)">
+            {{options.monthsTitle[month - 1]}}
           </button>
         </td>
-      </ng-container>
+      </tr>
+      </tbody>
+    </table>
 
-      <!--Year selection mode-->
-      <ng-container *ngIf="calendarSelectionMode == CalendarSelectionMode.year">
-        <td class="arrow previous">
-          <!--Decrease day by one-->
-          <button class="btn btn-block btn-default"
-                  (click)="updateYearRange(yearRange.from - options.yearSelectionRange, yearRange.to - options.yearSelectionRange)">
-            &#10094;
-          </button>
-        <td>
-          <button class="btn btn-info btn-block"
-                  disabled="disabled">
-            {{yearRange.from}} - {{yearRange.to}}
+    <!--Week days selector - Date selection -->
+    <table class="table table-condensed"
+           *ngSwitchCase="CalendarSelectionMode.day">
+      <thead>
+      <tr class="weekdays">
+        <th *ngFor="let dayTitle of options.daysTitle" class="text-center">{{dayTitle}}</th>
+      </tr>
+      </thead>
+      <tbody class="days">
+      <tr *ngFor="let week of datesMatrix; let i = index;">
+        <td *ngFor="let day of datesMatrix[i]"
+            class="day">
+          <button *ngIf="day != null"
+                  [class]="getDayClasses(day)"
+                  (click)="selectDay(day.getDate())">
+            {{day.getDate()}}
           </button>
         </td>
-        <td class="arrow next">
-          <button class="btn btn-block btn-default"
-                  (click)="updateYearRange(yearRange.from + options.yearSelectionRange, yearRange.to + options.yearSelectionRange)">
-            &#10095;
-          </button>
-        </td>
-      </ng-container>
-    </tr>
-    </tbody>
-  </table>
-
-  <!--Calendar selector - Year selection-->
-  <table class="table table-condensed" *ngSwitchCase="CalendarSelectionMode.year">
-    <tbody class="years">
-    <tr *ngFor="let matrix of yearsMatrix">
-      <td *ngFor="let year of matrix"
-          class="year">
-        <button class="btn btn-block"
-                [class.btn-primary]="year == getCurrentYear()"
-                [class.btn-default]="year != getCurrentYear()"
-                (click)="selectYear(year)">
-          {{year}}
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!--Calendar selector - Month selection-->
-  <table class="table table-condensed"
-         *ngSwitchCase="CalendarSelectionMode.month">
-    <tbody class="months">
-    <tr *ngFor="let matrix of monthsMatrix">
-      <td *ngFor="let month of matrix"
-          class="month">
-        <button class="btn btn-block"
-                [class.btn-primary]="isCurrentMonth(month -1)"
-                [class.btn-default]="!isCurrentMonth(month -1)"
-                (click)="selectMonth(month - 1)">
-          {{options.monthsTitle[month - 1]}}
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!--Week days selector - Date selection -->
-  <table class="table table-condensed"
-         *ngSwitchCase="CalendarSelectionMode.day">
-    <thead>
-    <tr class="weekdays">
-      <th *ngFor="let dayTitle of options.daysTitle" class="text-center">{{dayTitle}}</th>
-    </tr>
-    </thead>
-    <tbody class="days">
-    <tr *ngFor="let week of datesMatrix; let i = index;">
-      <td *ngFor="let day of datesMatrix[i]"
-          class="day">
-        <button *ngIf="day != null"
-                class="btn btn-default btn-block"
-                [class.today]="getToday(day)">
-          {{day.getDate()}}
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+

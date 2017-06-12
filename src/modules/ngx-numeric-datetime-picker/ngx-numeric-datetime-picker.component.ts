@@ -4,7 +4,8 @@
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
 import {NgxNumericDateTimePickerOption} from "./ngx-numeric-datetime-picker-option";
 import {NgxDateTimePickerEditorMode} from "./enumerations/ngx-datetime-picker-editor-mode";
-import {DateInput} from "./models/date-input";
+import {NgxDate} from "../models/ngx-date";
+import {Meridiem} from "./enumerations/ngx-datetime-picker-daytime";
 
 @Component({
   selector: 'ngx-numeric-datetime-picker',
@@ -17,6 +18,12 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
   //#region Properties
 
+  // Min hour.
+  private iMinHour: number = 0;
+
+  // Max hour.
+  private iMaxHour: number = 23;
+
   // Numeric datetime picker option.
   @Input('options')
   private options: NgxNumericDateTimePickerOption;
@@ -26,10 +33,6 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
   // List of day names.
   private dayNames: Array<string>;
-
-  // Input box of month.
-  @ViewChild('monthBox')
-  private monthBox: ElementRef;
 
   // Input box of day.
   @ViewChild('dayBox')
@@ -47,11 +50,15 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   @ViewChild('minuteBox')
   private minuteBox: ElementRef;
 
+  // Input box of second.
+  @ViewChild('secondBox')
+  private secondBox: ElementRef;
+
   // Editor mode of control.
   private editorMode: NgxDateTimePickerEditorMode;
 
   // Store time configuration.
-  private time: DateInput;
+  private time: NgxDate;
 
   // Enumeration reference.
   private NgxDateTimePickerEditorMode = NgxDateTimePickerEditorMode;
@@ -64,6 +71,9 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   @Output('select-date')
   private readonly selectDateEmitter: EventEmitter<Date>;
 
+  // Enumeration reflection.
+  private readonly Meridiem = Meridiem;
+
   //#endregion
 
   //#region Constructor
@@ -72,8 +82,8 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
   public constructor(public changeDetectorRef: ChangeDetectorRef) {
     // Initiate date with current time.
     let date = new Date();
-    this.time = new DateInput();
-    this.time.setDate(date);
+    this.time = new NgxDate();
+    this.time.update(date);
 
     // List of month name.
     this.monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -87,35 +97,69 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
   //#region Methods
 
-  // This event is called when component has been initiated or not.
+  /*
+  * This event is called when component has been initiated or not.
+  * */
   public ngOnInit(): void {
-    if (this.options.initialDate != null) {
-      this.time.setDate(this.options.initialDate);
+    if (this.options.initial != null) {
+      this.time.update(this.options.initial);
     }
   }
 
-  // Update hour.
+  /*
+  * Update hour.
+  * */
   private updateHour(hour: number): void {
     let iHour = this.time.hour + hour;
-    if (iHour > 23)
-      iHour -= 24;
-    else if (iHour < 0)
-      iHour = 24 + iHour;
+    if (iHour > this.iMaxHour)
+      iHour = this.iMaxHour;
+    else if (iHour < this.iMinHour)
+      iHour = this.iMinHour;
     this.time.hour = iHour;
-    this.selectDateEmitter.emit(this.time.getDate());
   }
 
-  // Update minute to control
+  /*
+  * Update minute to control.
+  * */
   private updateMinute(minute: number): void {
     let iMinute = this.time.minute + minute;
-    if (iMinute < 0 || iMinute > 59)
+    if (iMinute < 0)
       iMinute = 0;
+    else if (iMinute > 59)
+      iMinute = 59;
 
     this.time.minute = iMinute;
-    this.selectDateEmitter.emit(this.time.getDate());
   }
 
-  // Update month.
+  /*
+  * Update second.
+  * */
+  private updateSecond(second: number): void{
+    let iSecond = this.time.second + second;
+    if (iSecond < 0)
+      iSecond = 0;
+    else if (iSecond > 59)
+      iSecond = 59;
+
+    this.time.second = iSecond;
+  }
+
+  /*
+  * Update year.
+  * */
+  private updateYear(year: number): void {
+    let iYear = this.time.year + year;
+    if (iYear < 0)
+      iYear = 0;
+    else if (iYear > 9999)
+      iYear = 9999;
+
+    this.time.year = iYear;
+  }
+
+  /*
+   * Update month.
+   * */
   private updateMonth(month: number): void {
     let iMonth = this.time.month + month;
     if (iMonth > 11)
@@ -124,10 +168,11 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
       iMonth = 11;
 
     this.time.month = iMonth;
-    this.selectDateEmitter.emit(this.time.getDate());
   }
 
-  // Update date.
+  /*
+   * Update date.
+   * */
   private updateDate(date: number): void {
 
     // Cancel focus.
@@ -140,21 +185,12 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
     else if (iDay > iMaxDay)
       iDay = 1;
     this.time.day = iDay;
-    this.selectDateEmitter.emit(this.time.getDate());
   }
 
-  // Update year.
-  private updateYear(year: number): void {
-    let iYear = this.time.year + year;
-    if (iYear < 0 || iYear > 9999)
-      iYear = 0;
-
-    this.time.year = iYear;
-    this.selectDateEmitter.emit(this.time.getDate());
-  }
-
-  // Cancel focus on a control.
-  private cancelFocus(mode: NgxDateTimePickerEditorMode, bEmitEvent?: boolean): void {
+  /*
+  * Cancel focus on a control.
+  * */
+  private cancelFocus(mode: NgxDateTimePickerEditorMode): void {
     if (mode == this.editorMode) {
       this.editorMode = null;
 
@@ -221,20 +257,20 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
         case NgxDateTimePickerEditorMode.hour:
           try {
-            let szHour = this.time.day.toString();
+            let szHour = this.time.hour.toString();
             let iHour = parseInt(szHour);
             if (!iHour)
               throw 'Invalid hour';
 
-            if (iHour < 0)
-              this.time.hour = 0;
-            else if (iHour > 23)
-              this.time.hour = 23;
+            if (iHour < this.iMinHour)
+              this.time.hour = this.iMinHour;
+            else if (iHour > this.iMaxHour)
+              this.time.hour = this.iMaxHour;
             else
-              this.time.hour = 0;
+              this.time.hour = iHour;
 
           } catch (exception) {
-            this.time.hour = 0;
+            this.time.hour = this.iMinHour;
           }
           break;
 
@@ -256,15 +292,32 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
             this.time.minute = 0;
           }
           break;
+
+        case NgxDateTimePickerEditorMode.second:
+          try {
+            let szSecond = this.time.second.toString();
+            let iSecond = parseInt(szSecond);
+            if (iSecond == NaN)
+              throw 'Invalid minute';
+
+            if (iSecond < 0)
+              this.time.second = 0;
+            else if (iSecond > 59)
+              this.time.second = 59;
+            else
+              this.time.second = 0;
+
+          } catch (exception) {
+            this.time.second = 0;
+          }
+          break;
       }
     }
-
-    // Initiate date object which will be sent to outer components.
-    if (bEmitEvent == true)
-      this.selectDateEmitter.emit(this.time.getDate());
   }
 
-  // Base on option to focus to specific element.
+  /*
+  * Base on option to focus to specific element.
+  * */
   private focus(mode: NgxDateTimePickerEditorMode): void {
 
     // Update editor mode.
@@ -272,9 +325,6 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
 
     switch (mode) {
-      case NgxDateTimePickerEditorMode.month:
-        this.monthBox.nativeElement.focus();
-        break;
 
       case NgxDateTimePickerEditorMode.day:
         this.dayBox.nativeElement.focus();
@@ -290,6 +340,10 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
       case NgxDateTimePickerEditorMode.minute:
         this.minuteBox.nativeElement.focus();
+        break;
+
+      case NgxDateTimePickerEditorMode.second:
+        this.secondBox.nativeElement.focus();
         break;
     }
   }
@@ -308,5 +362,16 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
     return (new Date(this.time.year, this.time.month + 1, 0)).getDate();
   }
 
+  /*
+  * Confirm date selection.
+  * */
+  private confirmSelection(): void{
+
+    // Cancel focus.
+    this.cancelFocus(this.editorMode);
+
+    // Emit event.
+    this.selectDateEmitter.emit(this.time.getDate());
+  }
   //#endregion
 }

@@ -2,8 +2,13 @@
   background-color: whitesmoke;
 }
 
-.calendar button{
+.calendar button {
   border-radius: 0;
+}
+
+.calendar.dropdown-menu {
+  padding: 0 !important;
+  border-top: transparent;
 }
 
 /* Weekdays (Mon-Sun) */
@@ -24,38 +29,4 @@
   text-align: center;
 }
 
-/* Days (1-31) */
 
-.day, .year, .decade {
-  border: none;
-  margin: 0;
-  text-align: center;
-}
-
-.day.mark, .year.mark, .decade.mark {
-  font-weight: bold;
-  background-color: #89C4F4;
-}
-
-td.day[disabled], td.year[disabled], td.decade[disabled] {
-  background-color: #6C7A89;
-  cursor: not-allowed !important;
-}
-
-td.day:not(disabled), td.year:not(disabled), td.year:not(disabled) {
-  cursor: pointer;
-}
-
-/* Class for current date.*/
-.day .today:not(disabled) {
-  background-color: #337ab7;
-  color: white;
-  font-weight: bold;
-}
-
-/* Style of current year */
-.year.current:not(disabled) {
-  background-color: #337ab7;
-  color: white;
-  font-weight: bold;
-}
