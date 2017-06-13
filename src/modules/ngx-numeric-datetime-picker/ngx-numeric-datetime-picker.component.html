@@ -1,6 +1,9 @@
-<div class="input-group ngx-numeric-datetime-picker">
+<div #control
+     class="input-group ngx-numeric-datetime-picker">
   <div class="form-control dropdown-toggle"
        data-toggle="dropdown">
+    <ng-container *ngIf="selection == null">{{options.placeHolder}}</ng-container>
+    <ng-container *ngIf="selection != null">{{format(selection.toDateTime())}}</ng-container>
   </div>
   <span class="input-group-addon dropdown-toggle"
         data-toggle="dropdown">
@@ -103,6 +106,7 @@
                      type="number"
                      class="mtr-input years"
                      placeholder="Year"
+                     maxlength="4"
                      max="9999"
                      min="0"
                      [(ngModel)]="time.year"
@@ -236,7 +240,6 @@
       </div>
     </li>
   </ul>
-
 </div>
 
 

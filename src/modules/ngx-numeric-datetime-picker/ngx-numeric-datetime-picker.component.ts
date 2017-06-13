@@ -5,7 +5,8 @@ import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, O
 import {NgxNumericDateTimePickerOption} from "./ngx-numeric-datetime-picker-option";
 import {NgxDateTimePickerEditorMode} from "./enumerations/ngx-datetime-picker-editor-mode";
 import {NgxDate} from "../models/ngx-date";
-import {Meridiem} from "./enumerations/ngx-datetime-picker-daytime";
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ngx-numeric-datetime-picker',
@@ -17,6 +18,9 @@ import {Meridiem} from "./enumerations/ngx-datetime-picker-daytime";
 export class NgxNumericDateTimePickerComponent implements OnInit {
 
   //#region Properties
+
+  @ViewChild('control')
+  private control: ElementRef;
 
   // Min hour.
   private iMinHour: number = 0;
@@ -69,6 +73,9 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
 
   // Store time configuration.
   private time: NgxDate;
+
+  // Time which has been selected.
+  private selection: NgxDate;
 
   // Enumeration reference.
   private NgxDateTimePickerEditorMode = NgxDateTimePickerEditorMode;
@@ -381,8 +388,45 @@ export class NgxNumericDateTimePickerComponent implements OnInit {
     // Cancel focus.
     this.cancelFocus(this.editorMode);
 
+    // Update the selection.
+    this.selection = _.cloneDeep(this.time);
+
+    // Close the drop-down menu.
+    this.control.nativeElement.classList.remove('open');
+
     // Emit event.
     this.selectDateEmitter.emit(this.time.toDateTime());
+  }
+
+  /*
+  * Update the date
+  * */
+  public update(date: Date): void{
+    let ngxDateTime = new NgxDate();
+    ngxDateTime.update(date);
+    ngxDateTime.setMonth(ngxDateTime.getMonth() + 1);
+
+    this.time = ngxDateTime;
+  }
+
+  /*
+  * Clear selection date.
+  * */
+  public clearSelection(): void{
+    this.selection = null;
+  }
+
+  /*
+   * Format date.
+   * */
+  private format(date: Date): string{
+    if (date == null)
+      return null;
+
+    if (this.options == null || this.options.format == null || this.options.format == null || this.options.format.length < 1)
+      return date.toDateString();
+
+    return moment(date).format(this.options.format);
   }
 
   //#endregion

@@ -23,7 +23,7 @@ export class NgxDateTimePickerOption{
   // Whether current year should be highlighted.
   public highLightCurrentYear: boolean;
 
-  // Range of year in year selection mode.
+  // NgxRange of year in year selection mode.
   public yearSelectionRange: number;
 
   // Number of years per row.
@@ -36,7 +36,9 @@ export class NgxDateTimePickerOption{
 
   //#region Constructor
 
-  // Initiate option with default settings.
+  /*
+  * Initiate option with default settings.
+  * */
   public constructor(){
     this.daysTitle = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     this.monthsTitle = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

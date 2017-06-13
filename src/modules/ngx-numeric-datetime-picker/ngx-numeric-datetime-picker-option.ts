@@ -15,6 +15,11 @@ export class NgxNumericDateTimePickerOption{
 
   public iMaxYear: number;
 
+  public placeHolder: string;
+
+  // Format of display date time.
+  public format: string;
+
   //#endregion
 
   //#region Constructor

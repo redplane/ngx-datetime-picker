@@ -78,7 +78,7 @@
       <tr *ngFor="let matrix of yearsMatrix">
         <td *ngFor="let year of matrix"
             class="year">
-          <button [class]="getYearButtonClass(year)"
+          <button [class]="getYearStyle(year)"
                   (click)="selectYear(year)">
             {{year}}
           </button>
@@ -94,7 +94,7 @@
       <tr *ngFor="let matrix of monthsMatrix">
         <td *ngFor="let month of matrix"
             class="month">
-          <button [class]="getMonthButtonClass(month)"
+          <button [class]="getMonthStyle(month)"
                   (click)="selectMonth(month)">
             {{options.monthsTitle[month - 1]}}
           </button>
@@ -116,7 +116,7 @@
         <td *ngFor="let day of datesMatrix[i]"
             class="day">
           <button *ngIf="day != null"
-                  [class]="getDayClasses(day)"
+                  [class]="getDayStyle(day)"
                   (click)="selectDay(day.getDate())">
             {{day.getDate()}}
           </button>

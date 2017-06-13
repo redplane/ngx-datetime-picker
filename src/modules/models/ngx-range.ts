@@ -1,7 +1,7 @@
 /**
  * Created by Linh Nguyen on 6/9/2017.
  */
-export class Range<T>{
+export class NgxRange<T>{
 
   //#region Properties
 

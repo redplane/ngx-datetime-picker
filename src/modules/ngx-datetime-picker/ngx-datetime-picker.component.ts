@@ -5,16 +5,16 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, Output} f
 import {NgxDateTimePickerOption} from "./ngx-datetime-picker-option";
 import * as _ from 'lodash';
 import {CalendarSelectionMode} from "./enumerations/calendar-selection-mode";
-import {Range} from "./models/Range";
+import {NgxRange} from '../models/ngx-range';
 import {NgxDate} from "../models/ngx-date";
-import {reduce} from "rxjs/operator/reduce";
 
 import * as moment from 'moment';
 
 @Component({
   selector: 'ngx-datetime-picker',
   templateUrl: 'ngx-datetime-picker.component.html',
-  styleUrls: ['ngx-datetime-picker.css']
+  styleUrls: ['ngx-datetime-picker.css'],
+  exportAs: 'ngx-datetime-picker'
 })
 
 export class NgxDateTimePickerComponent implements OnInit {
@@ -43,8 +43,8 @@ export class NgxDateTimePickerComponent implements OnInit {
   // Matrix of months which can be shown on calendar.
   private monthsMatrix: Array<Array<number>>;
 
-  // Range of years.
-  private yearRange: Range<number>;
+  // NgxRange of years.
+  private yearRange: NgxRange<number>;
 
   // Calendar selection mode
   private calendarSelectionMode: CalendarSelectionMode;
@@ -53,10 +53,10 @@ export class NgxDateTimePickerComponent implements OnInit {
   private CalendarSelectionMode = CalendarSelectionMode;
 
   /*
-  * This event is fired when time is selected.
-  * */
+   * This event is fired when time is selected.
+   * */
   @Output('select-time')
-  private selectTimeEventEmitter: EventEmitter<NgxDate>;
+  private selectTimeEventEmitter: EventEmitter<Date>;
 
   /*
    * Current time of the system.
@@ -75,7 +75,7 @@ export class NgxDateTimePickerComponent implements OnInit {
     this.monthsMatrix = new Array<Array<number>>();
     this.date = new NgxDate();
 
-    this.selectTimeEventEmitter = new EventEmitter<NgxDate>();
+    this.selectTimeEventEmitter = new EventEmitter<Date>();
   }
 
   //#endregion
@@ -92,7 +92,7 @@ export class NgxDateTimePickerComponent implements OnInit {
     this.currentTime = new Date();
 
     // Initiate year range.
-    this.yearRange = new Range<number>();
+    this.yearRange = new NgxRange<number>();
 
     // Calculate year range.
     let iYear = this.currentTime.getFullYear();
@@ -175,7 +175,7 @@ export class NgxDateTimePickerComponent implements OnInit {
       }
 
       // Copy date instance.
-      let current:Date = _.cloneDeep(date);
+      let current: Date = _.cloneDeep(date);
 
       // Update date.
       current.setDate(iDay);
@@ -194,7 +194,7 @@ export class NgxDateTimePickerComponent implements OnInit {
   /*
    * Get years list.
    * */
-  private getYearsMatrix(range: Range<number>, split: number): Array<Array<number>> {
+  private getYearsMatrix(range: NgxRange<number>, split: number): Array<Array<number>> {
     let years: Array<Array<number>> = new Array<Array<number>>();
     let iRow = 0;
     let iColumn = 0;
@@ -217,15 +217,15 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Get months matrix.
-  * */
-  private getMonthsMatrix(): Array<Array<number>>{
+   * Get months matrix.
+   * */
+  private getMonthsMatrix(): Array<Array<number>> {
     // Calculate months matrix.
     let iMonth = 1;
     let iMonthRowIndex = 0;
     let monthsMatrix: Array<Array<number>> = new Array<Array<number>>();
 
-    while (iMonth < 13){
+    while (iMonth < 13) {
 
       if (monthsMatrix[iMonthRowIndex] == null)
         monthsMatrix[iMonthRowIndex] = new Array<number>();
@@ -272,11 +272,12 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Get current month in system.
-  * */
-  private getCurrentMonth(): number{
+   * Get current month in system.
+   * */
+  private getCurrentMonth(): number {
     return this.currentTime.getMonth();
   }
+
   /*
    * Make a year be selected.
    * */
@@ -293,33 +294,34 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Select month and jump to date select if possible.
-  * */
-  private selectMonth(month: number): void{
+   * Select month and jump to date select if possible.
+   * */
+  private selectMonth(month: number): void {
     this.date.setMonth(month);
     this.calendarSelectionMode = CalendarSelectionMode.day;
     this.updateDate();
   }
 
   /*
-  * Select the specific date.
-  * */
-  private selectDay(day: number): void{
+   * Select the specific date.
+   * */
+  private selectDay(day: number): void {
     this.date.setDay(day);
     this.updateDate();
 
     // Close drop-down menu.
     this.selection = _.cloneDeep(this.date);
-    this.selectTimeEventEmitter.emit(this.selection);
+    this.selectTimeEventEmitter.emit(this.selection.toDateTime());
 
     this.closeDropDown();
   }
-  /*
-  * Update year range.
-  * */
-  private updateYearRange(start: number, end: number): void{
 
-    if (start > end){
+  /*
+   * Update year range.
+   * */
+  private updateYearRange(start: number, end: number): void {
+
+    if (start > end) {
       let iTemporary = start;
       start = end;
       end = iTemporary;
@@ -331,10 +333,10 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * This callback is fired when title of calendar is clicked.
-  * */
-  private clickTitle(): void{
-    switch (this.calendarSelectionMode){
+   * This callback is fired when title of calendar is clicked.
+   * */
+  private clickTitle(): void {
+    switch (this.calendarSelectionMode) {
       case CalendarSelectionMode.day:
         this.calendarSelectionMode = CalendarSelectionMode.month;
         break;
@@ -348,32 +350,17 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Check whether month is the current selected or not.
-  * */
-  private isCurrentMonth(month: number): boolean{
-
-    // Year is different.
-    if (this.date.getYear() != this.currentTime.getFullYear())
-      return false;
-
-    if (this.currentTime.getMonth() != month)
-      return false;
-
-    return true;
-  }
-
-  /*
-  * This callback is fired when user clicks on drop down menu.
-  * */
-  private clickDropDownMenu(mouseEvent: MouseEvent): void{
+   * This callback is fired when user clicks on drop down menu.
+   * */
+  private clickDropDownMenu(mouseEvent: MouseEvent): void {
     mouseEvent.stopPropagation();
     return;
   }
 
   /*
-  * This function is for closing drop-down menu.
-  * */
-  private closeDropDown(): void{
+   * This function is for closing drop-down menu.
+   * */
+  private closeDropDown(): void {
     if (this.dropDownControl == null)
       return;
 
@@ -385,9 +372,9 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Get classes for year buttons.
-  * */
-  private getYearButtonClass(year: number): string{
+   * Get classes for year buttons.
+   * */
+  private getYearStyle(year: number): string {
     let classes: Array<string> = new Array<string>();
     classes.push('btn');
     classes.push('btn-block');
@@ -405,9 +392,9 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Get display classes for month buttons base on specific conditions.
-  * */
-  private getMonthButtonClass(month: number): string{
+   * Get display classes for month buttons base on specific conditions.
+   * */
+  private getMonthStyle(month: number): string {
     let classes: Array<string> = new Array<string>();
 
     if (this.selection != null && this.selection.getYear() == this.date.getYear() && month == this.selection.getMonth())
@@ -429,7 +416,7 @@ export class NgxDateTimePickerComponent implements OnInit {
   /*
    * Get display classes for month buttons base on specific conditions.
    * */
-  private getDayClasses(date: Date): string{
+  private getDayStyle(date: Date): string {
     let classes: Array<string> = new Array<string>();
 
     // Default classes.
@@ -449,10 +436,30 @@ export class NgxDateTimePickerComponent implements OnInit {
   }
 
   /*
-  * Format datetime.
-  * */
-  private format(date: Date): string{
+   * Format datetime.
+   * */
+  private format(date: Date): string {
     return moment(date).format(this.options.format);
+  }
+
+  /*
+  * Clear selection.
+  * */
+  public clearSelection(): void{
+    this.selection = null;
+    this.selectTimeEventEmitter.emit(null);
+  }
+
+  /*
+  * Raise selection event.
+  * */
+  public setSelection(date: Date): void{
+    let ngxDate = new NgxDate();
+    ngxDate.update(date);
+    ngxDate.setMonth(ngxDate.getMonth() + 1);
+    this.selection = ngxDate;
+
+    this.selectTimeEventEmitter.emit(date);
   }
 
   //#endregion
