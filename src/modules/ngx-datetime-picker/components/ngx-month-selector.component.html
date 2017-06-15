@@ -1,0 +1,38 @@
+<table class="table table-condensed">
+  <tbody>
+  <tr class="calendar-title">
+    <td class="arrow previous">
+      <button class="btn btn-block btn-default"
+              (click)="updateYear(-1)">
+        &#10094;
+      </button>
+    <td>
+      <button class="btn btn-info btn-block"
+              (click)="clickTitle()">
+        {{year}}
+      </button>
+    </td>
+    <td class="arrow next">
+      <button class="btn btn-block btn-default"
+              (click)="updateYear(1)">
+        &#10095;
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table class="table table-condensed">
+  <tbody class="months">
+  <tr *ngFor="let matrix of getMonthsMatrix()">
+    <td *ngFor="let item of matrix"
+        class="month">
+      <button class="btn btn-default btn-block"
+              [class.btn-primary]="selected != null && selected.getFullYear() == year && selected.getMonth() == item.getMonth()"
+              (click)="selectMonth(item)">
+        {{titles[item.getMonth()]}}
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

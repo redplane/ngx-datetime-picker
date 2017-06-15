@@ -3,7 +3,7 @@
 }
 
 .calendar button {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 .calendar.dropdown-menu {

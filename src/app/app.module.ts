@@ -6,12 +6,18 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {NgxDateTimePickerComponent} from "../modules/ngx-datetime-picker/ngx-datetime-picker.component";
 import {NgxNumericDateTimePickerComponent} from "../modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker.component";
+import {NgxDaySelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-day-selector.component";
+import {NgxMonthSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-month-selector.component";
+import {NgxYearSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-year-selector.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NgxDateTimePickerComponent,
-    NgxNumericDateTimePickerComponent
+    NgxNumericDateTimePickerComponent,
+    NgxDaySelectorComponent,
+    NgxMonthSelectorComponent,
+    NgxYearSelectorComponent
   ],
   imports: [
     BrowserModule,
