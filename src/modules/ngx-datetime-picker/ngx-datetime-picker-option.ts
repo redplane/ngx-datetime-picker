@@ -47,7 +47,7 @@ export class NgxDateTimePickerOption{
     this.highLightCurrentYear = true;
     this.highLightCurrentMonth = true;
     this.highLightCurrentDay = true;
-    this.format = 'YYYY-MM-DD';
+    this.format = 'YYYY-MM-DD HH:mm:ss';
   }
 
   //#endregion

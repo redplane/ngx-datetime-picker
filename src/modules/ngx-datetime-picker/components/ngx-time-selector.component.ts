@@ -2,7 +2,7 @@
  * Created by Akai on 6/16/2017.
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core'
 import * as _ from 'lodash';
 import {NgxDate} from "../../models/ngx-date";
 import * as moment from 'moment';
@@ -31,9 +31,25 @@ export class NgxTimeSelectorComponent implements OnInit{
   // Emitter which should be raised when time is selected.
   private selectTimeEventEmitter: EventEmitter<Date>;
 
+  // Input field of hour.
+  @ViewChild('hourInputField')
+  private hourInputField: ElementRef;
+
+  // Input field of minute.
+  @ViewChild('minuteInputField')
+  private minuteInputField: ElementRef;
+
+  // Input field of second.
+  @ViewChild('secondInputField')
+  private secondInputField: ElementRef;
+
   // Emitter which should be emitted when title is clicked.
   @Output('click-title')
   private clickTitleEventEmitter: EventEmitter<void>;
+
+  // Emitter which should be emitted when confirm button is clicked.
+  @Output('click-confirm')
+  private eClickConfirm: EventEmitter<Date>;
 
   //#endregion
 
@@ -45,6 +61,7 @@ export class NgxTimeSelectorComponent implements OnInit{
   public constructor(){
     this.selectTimeEventEmitter = new EventEmitter<Date>();
     this.clickTitleEventEmitter = new EventEmitter<void>();
+    this.eClickConfirm = new EventEmitter<Date>()
   }
 
   //#endregion
@@ -96,43 +113,90 @@ export class NgxTimeSelectorComponent implements OnInit{
   /*
    * Event which is called when hour is updated.
    * */
-  private hookHourChange(event: Event): void{
-    if (event == null)
+  private changeHour(): void{
+    if (this.hourInputField == null)
       return;
 
-    let srcElement = event.srcElement;
-    if (srcElement == null)
+    let nativeElement = this.hourInputField.nativeElement;
+    if (nativeElement == null)
       return;
 
-    this.time.setMinutes(srcElement['value']);
+    try{
+      let iHour = parseInt(nativeElement.value);
+      if (iHour == null || iHour == NaN)
+        throw 'Value is invalid';
+
+      if (iHour < 0)
+        this.time.setHours(0);
+      else if (iHour > 23)
+        this.time.setHours(23);
+      else
+        this.time.setHours(iHour);
+    } catch (exception){
+      this.time.setHours(0);
+    }
   }
 
   /*
   * Event which is called when minute is updated.
   * */
-  private hookMinuteChange(event: Event): void{
-    if (event == null)
+  private changeMinute(): void{
+    if (this.minuteInputField == null)
       return;
 
-    let srcElement = event.srcElement;
-    if (srcElement == null)
+    let nativeElement = this.minuteInputField.nativeElement;
+    if (nativeElement == null)
       return;
 
-    this.time.setMinutes(srcElement['value']);
+    try{
+      let iMinute = parseInt(nativeElement.value);
+      if (iMinute == null || iMinute == NaN)
+        throw 'Value is invalid';
+
+      if (iMinute < 0)
+        this.time.setMinutes(0);
+      else if (iMinute > 59)
+        this.time.setMinutes(59);
+      else
+        this.time.setMinutes(iMinute);
+    } catch (exception){
+      this.time.setMinutes(0);
+    }
   }
 
   /*
   * Event which is called when second is updated.
   * */
-  private hookSecondChange(event: Event): void{
-    if (event == null)
+  private changeSecond(): void{
+    if (this.secondInputField == null)
       return;
 
-    let srcElement = event.srcElement;
-    if (srcElement == null)
+    let nativeElement = this.secondInputField.nativeElement;
+    if (nativeElement == null)
       return;
 
-    this.time.setSeconds(srcElement['value']);
+    try{
+      let iSecond = parseInt(nativeElement.value);
+      if (iSecond == null || iSecond == NaN)
+        throw 'Value is invalid';
+
+      if (iSecond < 0)
+        this.time.setSeconds(0);
+      else if (iSecond > 59)
+        this.time.setSeconds(59);
+      else
+        this.time.setSeconds(iSecond);
+    } catch (exception){
+      this.time.setSeconds(0);
+    }
   }
+
+  /*
+  * Event which is fired when confirm buton is clicked.
+  * */
+  private clickConfirm(): void{
+    this.eClickConfirm.emit(this.time);
+  }
+
   //#endregion
 }

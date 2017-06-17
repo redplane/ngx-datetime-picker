@@ -47,7 +47,8 @@
     <!--Time selection-->
     <ngx-time-selector *ngSwitchCase="CalendarSelectionMode.time"
                        [initial]="selection"
-                       (click-title)="calendarSelectionMode = CalendarSelectionMode.day">
+                       (click-title)="calendarSelectionMode = CalendarSelectionMode.day"
+                       (click-confirm)="clickTime($event)">
     </ngx-time-selector>
 
   </div>

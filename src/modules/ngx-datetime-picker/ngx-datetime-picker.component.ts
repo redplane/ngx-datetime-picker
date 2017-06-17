@@ -144,13 +144,30 @@ export class NgxDateTimePickerComponent implements OnInit {
    * Select the specific date.
    * */
   private clickDate(item: Date): void {
-    // Close drop-down menu.
-    this.setSelection(item);
+    // Update current selection.
+    this.date.setFullYear(item.getFullYear(), item.getMonth(), item.getDate());
 
+    // Change to time.
     this.calendarSelectionMode = CalendarSelectionMode.time;
-    // this.closeDropDown();
   }
 
+  /*
+  * Called when time is selected.
+  * */
+  private clickTime(item: Date): void{
+
+    // Update current selection.
+    this.date.setFullYear(item.getFullYear(), item.getMonth(), item.getDate());
+
+    // Set time.
+    this.date.setHours(item.getHours(), item.getMinutes(), item.getSeconds());
+
+    // Set selection to current item.
+    this.setSelection(this.date);
+
+    // Close drop-down.
+    this.closeDropDown();
+  }
   /*
    * This callback is fired when user clicks on drop down menu.
    * */
