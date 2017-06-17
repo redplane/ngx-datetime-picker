@@ -9,6 +9,7 @@ import {NgxNumericDateTimePickerComponent} from "../modules/ngx-numeric-datetime
 import {NgxDaySelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-day-selector.component";
 import {NgxMonthSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-month-selector.component";
 import {NgxYearSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-year-selector.component";
+import {NgxTimeSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-time-selector.component";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {NgxYearSelectorComponent} from "../modules/ngx-datetime-picker/component
     NgxNumericDateTimePickerComponent,
     NgxDaySelectorComponent,
     NgxMonthSelectorComponent,
-    NgxYearSelectorComponent
+    NgxYearSelectorComponent,
+    NgxTimeSelectorComponent
   ],
   imports: [
     BrowserModule,

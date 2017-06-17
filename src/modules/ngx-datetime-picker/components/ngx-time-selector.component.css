@@ -1,0 +1,60 @@
+.ngx-time-selector table {
+  max-width: 330px;
+  width: 330px;
+}
+
+.ngx-time-selector td,
+.ngx-time-selector th {
+  border: 0;
+}
+
+.ngx-time-selector .time-separator {
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.ngx-time-selector .time input {
+  width: 80px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  text-align: center;
+}
+
+.ngx-time-selector .time-title th {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+/* Numeric input style override */
+.ngx-time-selector input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: block;
+  width: 0;
+  color: #333;
+  text-align: center;
+  position: relative;
+}
+
+.ngx-time-selector input[type=number]::-webkit-inner-spin-button:before,
+.ngx-time-selector input[type=number]::-webkit-inner-spin-button:after {
+  content: "^";
+  position: absolute;
+  right: 0;
+  font-family: monospace;
+  line-height: 0;
+}
+
+.ngx-time-selector input[type=number]::-webkit-inner-spin-button:before {
+  top: 0;
+}
+
+.ngx-time-selector input[type=number]::-webkit-inner-spin-button:after {
+  bottom: 0;
+  -webkit-transform: rotate(180deg);
+}
+
+/*End numeric input override*/
+

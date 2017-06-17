@@ -12,7 +12,7 @@ import {NgxRange} from "../models/ngx-range";
 @Component({
   selector: 'ngx-datetime-picker',
   templateUrl: 'ngx-datetime-picker.component.html',
-  styleUrls: ['ngx-datetime-picker.css'],
+  styleUrls: ['ngx-datetime-picker.css', '../ngx-numeric-datetime-picker/clutterboard-theme.css'],
   exportAs: 'ngx-datetime-picker'
 })
 
@@ -147,7 +147,8 @@ export class NgxDateTimePickerComponent implements OnInit {
     // Close drop-down menu.
     this.setSelection(item);
 
-    this.closeDropDown();
+    this.calendarSelectionMode = CalendarSelectionMode.time;
+    // this.closeDropDown();
   }
 
   /*

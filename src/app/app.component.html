@@ -20,7 +20,9 @@
     <div class="panel panel-primary">
       <div class="panel-heading">Heading</div>
       <div class="panel-body">
-        <ngx-datetime-picker #ngxDateTimePicker="ngx-datetime-picker" (select-time)="getDate($event)"></ngx-datetime-picker>
+        <ngx-datetime-picker #ngxDateTimePicker="ngx-datetime-picker"
+                             (select-time)="getDate($event)">
+        </ngx-datetime-picker>
       </div>
       <div class="panel-footer">
         <button class="btn btn-primary" (click)="clearSelection()">
@@ -34,6 +36,17 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Heading</div>
+      <div class="panel-body">
+        <ngx-time-selector></ngx-time-selector>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 

@@ -24,7 +24,7 @@
                        (update-range)="updateYears($event)">
     </ngx-year-selector>
 
-    <!--Calendar selector - Month selection-->
+    <!--Month selection-->
     <ngx-month-selector *ngSwitchCase="CalendarSelectionMode.month"
                         [titles]="options.monthsTitle"
                         [selected]="selection"
@@ -43,6 +43,13 @@
                       (click-title)="calendarSelectionMode = CalendarSelectionMode.month"
                       (select-date)="clickDate($event)">
     </ngx-day-selector>
+
+    <!--Time selection-->
+    <ngx-time-selector *ngSwitchCase="CalendarSelectionMode.time"
+                       [initial]="selection"
+                       (click-title)="calendarSelectionMode = CalendarSelectionMode.day">
+    </ngx-time-selector>
+
   </div>
 </div>
 

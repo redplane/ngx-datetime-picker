@@ -1,0 +1,99 @@
+<div class="ngx-time-selector">
+  <table class="table table-responsive table-condensed">
+    <thead>
+    <tr class="calendar-title">
+      <td>
+        <button class="btn btn-default btn-block"
+                (click)="clickTitle()">
+          {{display(time)}}
+        </button>
+      </td>
+    </tr>
+    </thead>
+  </table>
+  <table class="table table-responsive">
+    <tbody class="time">
+    <tr>
+      <td>
+        <button class="btn btn-block"
+                (click)="hourInputField.stepUp(1)">
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button class="btn btn-block"
+                (click)="minuteInputField.stepUp(1)">
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button class="btn btn-block"
+                (click)="secondInputField.stepUp(1)">
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input #hourInputField type="number"
+               class="form-control"
+               [value]="time.getHours()"
+               (change)="hookHourChange($event)"
+               min="0"
+               max="23">
+      </td>
+      <td class="time-separator">:</td>
+      <td class="text-center">
+        <input #minuteInputField type="number"
+               class="form-control"
+               [value]="time.getMinutes()"
+               (change)="hookMinuteChange($event)"
+               min="0"
+               max="59">
+      </td>
+      <td class="time-separator">:</td>
+      <td class="text-center">
+        <input #secondInputField type="number"
+               [value]="time.getSeconds()"
+               (change)="hookSecondChange($event)"
+               class="form-control"
+               min="0"
+               max="23">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button class="btn btn-block"
+                (click)="hourInputField.stepDown(1)">
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button class="btn btn-block"
+                (click)="minuteInputField.stepDown(1)">
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button class="btn btn-block"
+                (click)="secondInputField.stepDown(1)">
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr class="calendar-title">
+      <td colspan="5">
+        <button class="btn btn-primary btn-block">
+          <span class="glyphicon glyphicon-check"></span>
+        </button>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
