@@ -144,12 +144,5 @@ export class NgxDaySelectorComponent{
     this.month = iMonth;
   }
 
-  /*
-  * Get date difference
-  * */
-  private getAbs(x: number){
-    return Math.abs(x);
-  }
-
   //#endregion
 }

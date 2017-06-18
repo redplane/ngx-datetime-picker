@@ -52,5 +52,12 @@ export class AppComponent {
   public clearNumericSelection(): void{
     this.ngxNumericDateTimePicker.clearSelection();
   }
+
+  /*
+  * Event is fired when confirmation button is clicked.
+  * */
+  public clickConfirm(date: Date): void{
+    console.log(date);
+  }
   //#endregion
 }

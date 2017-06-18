@@ -16,6 +16,7 @@
     <tr>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getHour() >= 23"
                 (click)="hourInputField.stepUp(1); changeHour()">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
@@ -23,6 +24,7 @@
       <td></td>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getMinute() >= 59"
                 (click)="minuteInputField.stepUp(1); changeMinute()">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
@@ -30,6 +32,7 @@
       <td></td>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getSecond() >= 59"
                 (click)="secondInputField.stepUp(1); changeSecond()">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
@@ -40,8 +43,11 @@
         <input #hourInputField
                type="number"
                class="form-control"
-               [value]="time.getHours()"
+               [value]="time.getHour()"
                (change)="changeHour()"
+               (blur)="changeHour()"
+               maxlength="2"
+               pattern="\d*"
                min="0"
                max="23">
       </td>
@@ -50,8 +56,11 @@
         <input #minuteInputField
                type="number"
                class="form-control"
-               [value]="time.getMinutes()"
+               [value]="time.getMinute()"
                (change)="changeMinute()"
+               (blur)="changeMinute()"
+               maxlength="2"
+               pattern="\d*"
                min="0"
                max="59">
       </td>
@@ -59,9 +68,12 @@
       <td class="text-center">
         <input #secondInputField
                type="number"
-               [value]="time.getSeconds()"
-               (change)="changeSecond()"
                class="form-control"
+               [value]="time.getSecond()"
+               (change)="changeSecond()"
+               (blur)="changeSecond()"
+               maxlength="2"
+               pattern="\d*"
                min="0"
                max="59">
       </td>
@@ -69,6 +81,7 @@
     <tr>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getHour() < 1"
                 (click)="hourInputField.stepDown(1); changeHour()">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
@@ -76,6 +89,7 @@
       <td></td>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getMinute() < 1"
                 (click)="minuteInputField.stepDown(1); changeMinute()">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
@@ -83,6 +97,7 @@
       <td></td>
       <td>
         <button class="btn btn-block"
+                [disabled]="time.getSecond() < 1"
                 (click)="secondInputField.stepDown(1); changeSecond()">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
@@ -93,6 +108,7 @@
     <tr class="calendar-title">
       <td colspan="5">
         <button class="btn btn-primary btn-block"
+                [disabled]="time.getSecond() < 1"
                 (click)="clickConfirm()">
           <span class="glyphicon glyphicon-check"></span>
         </button>

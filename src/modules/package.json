@@ -1,10 +1,13 @@
 {
   "name": "ngx-bootstrap-datetime-picker",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "A small Angular 4 plugin for datetime selection.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "moment": "^2.18.1"
   },
   "repository": {
     "type": "git",

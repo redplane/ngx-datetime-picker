@@ -5,6 +5,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core'
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import {NgxDate} from "../../models/ngx-date";
 
 @Component({
   selector: 'ngx-time-selector',
@@ -25,7 +26,7 @@ export class NgxTimeSelectorComponent implements OnInit{
   private format: string;
 
   // Time which has been set on server.
-  private time: Date;
+  private time: NgxDate;
 
   // Emitter which should be raised when time is selected.
   private selectTimeEventEmitter: EventEmitter<Date>;
@@ -58,6 +59,10 @@ export class NgxTimeSelectorComponent implements OnInit{
   * Initiate component with injector.
   * */
   public constructor(){
+
+    // Initiate time.
+    this.time = new NgxDate();
+
     this.selectTimeEventEmitter = new EventEmitter<Date>();
     this.clickTitleEventEmitter = new EventEmitter<void>();
     this.eClickConfirm = new EventEmitter<Date>()
@@ -69,10 +74,15 @@ export class NgxTimeSelectorComponent implements OnInit{
 
   // This function is called when component has been initiated successfully.
   public ngOnInit(): void {
-    if (this.initial != null)
-      this.time = _.cloneDeep(this.initial);
-    else
-      this.time = new Date();
+    // Initiate is specified.
+    if (this.initial != null) {
+      this.time = new NgxDate();
+      this.time.update(this.initial);
+    }
+    else {
+      let time = new Date();
+      this.time.update(time);
+    }
   }
 
   /*
@@ -84,15 +94,15 @@ export class NgxTimeSelectorComponent implements OnInit{
   }
 
   public updateHour(hour: number): void{
-    this.time.setHours(hour);
+    this.time.setHour(hour);
   }
 
   public updateMinute(minute: number): void{
-    this.time.setMinutes(minute);
+    this.time.setMinute(minute);
   }
 
   public updateSecond(second: number): void{
-    this.time.setSeconds(second);
+    this.time.setSecond(second);
   }
 
   private display(date: Date): string{
@@ -122,17 +132,17 @@ export class NgxTimeSelectorComponent implements OnInit{
 
     try{
       let iHour = parseInt(nativeElement.value);
-      if (iHour == null || iHour == NaN)
+      if (!iHour)
         throw 'Value is invalid';
 
       if (iHour < 0)
-        this.time.setHours(0);
+        iHour = 0;
       else if (iHour > 23)
-        this.time.setHours(23);
-      else
-        this.time.setHours(iHour);
+        iHour = 23;
+
+      this.time.setHour(iHour);
     } catch (exception){
-      this.time.setHours(0);
+      this.time.setHour(0);
     }
   }
 
@@ -149,17 +159,17 @@ export class NgxTimeSelectorComponent implements OnInit{
 
     try{
       let iMinute = parseInt(nativeElement.value);
-      if (iMinute == null || iMinute == NaN)
+      if (!iMinute)
         throw 'Value is invalid';
 
       if (iMinute < 0)
-        this.time.setMinutes(0);
+        iMinute = 0;
       else if (iMinute > 59)
-        this.time.setMinutes(59);
-      else
-        this.time.setMinutes(iMinute);
+        iMinute = 59;
+
+      this.time.setMinute(iMinute);
     } catch (exception){
-      this.time.setMinutes(0);
+      this.time.setMinute(0);
     }
   }
 
@@ -176,17 +186,17 @@ export class NgxTimeSelectorComponent implements OnInit{
 
     try{
       let iSecond = parseInt(nativeElement.value);
-      if (iSecond == null || iSecond == NaN)
+      if (!iSecond)
         throw 'Value is invalid';
 
       if (iSecond < 0)
-        this.time.setSeconds(0);
+        iSecond = 0;
       else if (iSecond > 59)
-        this.time.setSeconds(59);
-      else
-        this.time.setSeconds(iSecond);
+        iSecond = 59;
+
+      this.time.setSecond(iSecond);
     } catch (exception){
-      this.time.setSeconds(0);
+      this.time.setSecond(0);
     }
   }
 
@@ -194,7 +204,12 @@ export class NgxTimeSelectorComponent implements OnInit{
   * Event which is fired when confirm buton is clicked.
   * */
   private clickConfirm(): void{
-    this.eClickConfirm.emit(this.time);
+
+    // Initiate ngx date.
+    let ngxDate: NgxDate = _.cloneDeep(this.time);
+    ngxDate.setMonth(this.time.getMonth() + 1);
+
+    this.eClickConfirm.emit(ngxDate.toDateTime());
   }
 
   //#endregion

@@ -42,7 +42,7 @@
           class="day">
         <button *ngIf="day != null"
                 class="btn btn-block btn-default"
-                [class.btn-primary]="selected != null && getAbs(day.getTime() - selected.getTime()) <= 86399999"
+                [class.btn-primary]="selected != null && selected.getFullYear() == day.getFullYear() && selected.getMonth() == day.getMonth() && selected.getDate() == day.getDate()"
                 (click)="select(day)">
           {{day.getDate()}}
         </button>
