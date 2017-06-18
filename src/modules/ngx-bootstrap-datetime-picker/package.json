@@ -1,0 +1,26 @@
+{
+  "name": "ngx-bootstrap-datetime-picker",
+  "version": "1.0.0",
+  "description": "A small Angular 4 plugin for datetime selection.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redplane/ngx-datetime-picker.git"
+  },
+  "keywords": [
+    "ngx-datetime-picker",
+    "ngx datetime picker",
+    "datetime picker",
+    "ngx bootstrap datetime picker",
+    "angular 4 datetime picker"
+  ],
+  "author": "Linh Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redplane/ngx-datetime-picker/issues"
+  },
+  "homepage": "https://github.com/redplane/ngx-datetime-picker#readme"
+}

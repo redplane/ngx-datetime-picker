@@ -4,17 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {NgxDateTimePickerComponent} from "../modules/ngx-datetime-picker/ngx-datetime-picker.component";
-import {NgxNumericDateTimePickerComponent} from "../modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker.component";
-import {NgxDaySelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-day-selector.component";
-import {NgxMonthSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-month-selector.component";
-import {NgxYearSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-year-selector.component";
-import {NgxTimeSelectorComponent} from "../modules/ngx-datetime-picker/components/ngx-time-selector.component";
+import {NgxDaySelectorComponent} from "modules/ngx-bootstrap-datetime-picker/components/ngx-day-selector.component";
+import {NgxMonthSelectorComponent} from "modules/ngx-bootstrap-datetime-picker/components/ngx-month-selector.component";
+import {NgxYearSelectorComponent} from "modules/ngx-bootstrap-datetime-picker/components/ngx-year-selector.component";
+import {NgxTimeSelectorComponent} from "modules/ngx-bootstrap-datetime-picker/components/ngx-time-selector.component";
+import {NgxBootstrapDateTimePickerComponent} from "modules/ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker.component";
+import {NgxNumericDateTimePickerComponent} from "modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker.component";
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    NgxDateTimePickerComponent,
+    NgxBootstrapDateTimePickerComponent,
     NgxNumericDateTimePickerComponent,
     NgxDaySelectorComponent,
     NgxMonthSelectorComponent,

@@ -1,8 +1,8 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {NgxNumericDateTimePickerOption} from "../modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker-option";
-import {NgxDateTimePickerComponent} from "../modules/ngx-datetime-picker/ngx-datetime-picker.component";
+import {NgxBootstrapDateTimePickerComponent} from "modules/ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker.component";
 import {NgxNumericDateTimePickerComponent} from "../modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker.component";
-import {NgxDateTimePickerOption} from "../modules/ngx-datetime-picker/ngx-datetime-picker-option";
+import {NgxDateTimePickerOption} from "modules/ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker-option";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ export class AppComponent {
   //#region Properties
 
   @ViewChild('ngxDateTimePicker')
-  private ngxDateTimePicker: NgxDateTimePickerComponent;
+  private ngxDateTimePicker: NgxBootstrapDateTimePickerComponent;
 
   @ViewChild('ngxNumericDateTimePicker')
   private ngxNumericDateTimePicker: NgxNumericDateTimePickerComponent;
@@ -29,7 +29,7 @@ export class AppComponent {
     let initialDate = new Date();
     initialDate.setFullYear(1000);
     this.ngxNumericDateTimePickerOption.initial = initialDate;
-    
+
   }
   title = 'app works!';
 

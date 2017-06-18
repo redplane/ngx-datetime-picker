@@ -4,7 +4,6 @@
 
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core'
 import * as _ from 'lodash';
-import {NgxDate} from "../../models/ngx-date";
 import * as moment from 'moment';
 
 @Component({
