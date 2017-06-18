@@ -93,18 +93,57 @@ export class NgxTimeSelectorComponent implements OnInit{
     this.selectTimeEventEmitter.emit(date);
   }
 
+  /*
+  * Update hour by increasing or decreasing value.
+  * */
   public updateHour(hour: number): void{
-    this.time.setHour(hour);
+    // Parse and validate hour.
+    this.changeHour();
+
+    // Update hour.
+    let iHour: number = this.time.getHour();
+    iHour += hour;
+    this.time.setHour(iHour);
+
+    // Update hour.
+    //this.changeHour();
   }
 
+  /*
+  * Update minute by increase or decreasing value.
+  * */
   public updateMinute(minute: number): void{
-    this.time.setMinute(minute);
+    // Parse and validate hour.
+    this.changeMinute();
+
+    // Update minute.
+    let iMinute: number = this.time.getMinute();
+    iMinute += minute;
+    this.time.setMinute(iMinute);
+
+    // Update minute.
+    //this.changeMinute();
   }
 
+  /*
+  * Update second by increasing or decreasing second.
+  * */
   public updateSecond(second: number): void{
-    this.time.setSecond(second);
+    // Parse and validate hour.
+    this.changeSecond();
+
+    // Update minute.
+    let iSecond: number = this.time.getSecond();
+    iSecond += second;
+    this.time.setSecond(iSecond);
+
+    // Update minute.
+    //this.changeSecond();
   }
 
+  /*
+  * Display date by using specific format.
+  * */
   private display(date: Date): string{
     if (this.format == null || this.format.length < 1)
       return moment(date).format('YYYY-MM-DD');
@@ -141,8 +180,10 @@ export class NgxTimeSelectorComponent implements OnInit{
         iHour = 23;
 
       this.time.setHour(iHour);
+      nativeElement.value = iHour;
     } catch (exception){
       this.time.setHour(0);
+      nativeElement.value = 0;
     }
   }
 
@@ -168,8 +209,10 @@ export class NgxTimeSelectorComponent implements OnInit{
         iMinute = 59;
 
       this.time.setMinute(iMinute);
+      nativeElement.value = iMinute;
     } catch (exception){
       this.time.setMinute(0);
+      nativeElement.value = 0;
     }
   }
 
@@ -195,8 +238,10 @@ export class NgxTimeSelectorComponent implements OnInit{
         iSecond = 59;
 
       this.time.setSecond(iSecond);
+      nativeElement.value = iSecond;
     } catch (exception){
       this.time.setSecond(0);
+      nativeElement.value = 0;
     }
   }
 

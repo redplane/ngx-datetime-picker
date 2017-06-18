@@ -7,3 +7,5 @@ exports.NgxDate = require('./models/ngx-date').NgxDate;
 exports.NgxRange = require('./models/ngx-range').NgxRange;
 
 require('./ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker.css');
+require('./ngx-bootstrap-datetime-picker/components/ngx-day-selector.component.css');
+require('./ngx-bootstrap-datetime-picker/components/ngx-time-selector.component.css');

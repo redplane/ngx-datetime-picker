@@ -39,7 +39,7 @@
     <tbody class="days">
     <tr *ngFor="let week of getMatrixOfDays();">
       <td *ngFor="let day of week"
-          class="day">
+          class="day" >
         <button *ngIf="day != null"
                 class="btn btn-block btn-default"
                 [class.btn-primary]="selected != null && selected.getFullYear() == day.getFullYear() && selected.getMonth() == day.getMonth() && selected.getDate() == day.getDate()"

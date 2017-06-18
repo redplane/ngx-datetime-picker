@@ -17,7 +17,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getHour() >= 23"
-                (click)="hourInputField.stepUp(1); changeHour()">
+                (click)="updateHour(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
       </td>
@@ -25,7 +25,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getMinute() >= 59"
-                (click)="minuteInputField.stepUp(1); changeMinute()">
+                (click)="updateMinute(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
       </td>
@@ -33,7 +33,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getSecond() >= 59"
-                (click)="secondInputField.stepUp(1); changeSecond()">
+                (click)="updateSecond(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
         </button>
       </td>
@@ -82,7 +82,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getHour() < 1"
-                (click)="hourInputField.stepDown(1); changeHour()">
+                (click)="updateHour(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
       </td>
@@ -90,7 +90,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getMinute() < 1"
-                (click)="minuteInputField.stepDown(1); changeMinute()">
+                (click)="updateMinute(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
       </td>
@@ -98,7 +98,7 @@
       <td>
         <button class="btn btn-block"
                 [disabled]="time.getSecond() < 1"
-                (click)="secondInputField.stepDown(1); changeSecond()">
+                (click)="updateSecond(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
         </button>
       </td>

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'ngx-day-selector',
   templateUrl: 'ngx-day-selector.component.html',
+  styleUrls: ['ngx-day-selector.component.css']
 })
 
 export class NgxDaySelectorComponent{
