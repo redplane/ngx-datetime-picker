@@ -41,3 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 /bower_components
+/plugin/node_modules
+/plugin/bower_components
+/plugin/.idea
