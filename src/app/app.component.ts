@@ -3,6 +3,7 @@ import {NgxNumericDateTimePickerOption} from "../modules/ngx-numeric-datetime-pi
 import {NgxBootstrapDateTimePickerComponent} from "modules/ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker.component";
 import {NgxNumericDateTimePickerComponent} from "../modules/ngx-numeric-datetime-picker/ngx-numeric-datetime-picker.component";
 import {NgxDateTimePickerOption} from "modules/ngx-bootstrap-datetime-picker/ngx-bootstrap-datetime-picker-option";
+import {CalendarSelectionMode} from "../modules/ngx-bootstrap-datetime-picker/enumerations/calendar-selection-mode";
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ export class AppComponent {
 
   private options: NgxDateTimePickerOption;
   //#endregion
+
+  private CalendarSelectionMode = CalendarSelectionMode;
 
   private ngxNumericDateTimePickerOption: NgxNumericDateTimePickerOption;
 

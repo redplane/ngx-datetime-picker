@@ -36,6 +36,10 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
   // Calendar selection mode
   private calendarSelectionMode: CalendarSelectionMode;
 
+  // Mode which is for calendar selection.
+  @Input('mode')
+  private mode: CalendarSelectionMode;
+
   // Enumeration reflection.
   private CalendarSelectionMode = CalendarSelectionMode;
 
@@ -125,6 +129,13 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
     // Set year.
     this.date.setFullYear(item.getFullYear());
 
+    // Only allowed to select year.
+    if (this.mode == CalendarSelectionMode.year){
+      this.setSelection(this.date);
+      this.closeDropDown();
+      return;
+    }
+
     // Let user select day.
     this.calendarSelectionMode = CalendarSelectionMode.month;
   }
@@ -137,6 +148,13 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
     this.date.setFullYear(item.getFullYear(), item.getMonth(), 1);
     this.date.setMonth(item.getMonth());
 
+    // Only allowed to select month.
+    if (this.mode == CalendarSelectionMode.month){
+      this.setSelection(this.date);
+      this.closeDropDown();
+      return;
+    }
+
     this.calendarSelectionMode = CalendarSelectionMode.day;
   }
 
@@ -146,6 +164,13 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
   private clickDate(item: Date): void {
     // Update current selection.
     this.date.setFullYear(item.getFullYear(), item.getMonth(), item.getDate());
+
+    // Only allowed to select date.
+    if (this.mode == CalendarSelectionMode.day){
+      this.setSelection(this.date);
+      this.closeDropDown();
+      return;
+    }
 
     // Change to time.
     this.calendarSelectionMode = CalendarSelectionMode.time;

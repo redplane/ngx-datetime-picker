@@ -1,28 +1,60 @@
 <div class="col-lg-12">
   <!--<div class="row">-->
-    <!--<div class="panel panel-primary">-->
-      <!--<div class="panel-heading">Heading</div>-->
-      <!--<div class="panel-body">-->
-        <!--<ngx-numeric-datetime-picker #ngxNumericDateTimePicker="ngx-numeric-datetime-picker"-->
-                                     <!--[options]="ngxNumericDateTimePickerOption"-->
-                                     <!--(select-date)="getDate($event)" >-->
-        <!--</ngx-numeric-datetime-picker>-->
-      <!--</div>-->
-      <!--<div class="panel-footer">-->
-        <!--<button class="btn btn-danger" (click)="clearNumericSelection()">-->
-          <!--Clear-->
-        <!--</button>-->
-      <!--</div>-->
-    <!--</div>-->
+  <!--<div class="panel panel-primary">-->
+  <!--<div class="panel-heading">Heading</div>-->
+  <!--<div class="panel-body">-->
+  <!--<ngx-numeric-datetime-picker #ngxNumericDateTimePicker="ngx-numeric-datetime-picker"-->
+  <!--[options]="ngxNumericDateTimePickerOption"-->
+  <!--(select-date)="getDate($event)" >-->
+  <!--</ngx-numeric-datetime-picker>-->
+  <!--</div>-->
+  <!--<div class="panel-footer">-->
+  <!--<button class="btn btn-danger" (click)="clearNumericSelection()">-->
+  <!--Clear-->
+  <!--</button>-->
+  <!--</div>-->
+  <!--</div>-->
   <!--</div>-->
 
   <div class="row">
     <div class="panel panel-primary">
-      <div class="panel-heading">Heading</div>
+      <div class="panel-heading">ngx-bootstrap-datetime-picker</div>
       <div class="panel-body">
-        <ngx-datetime-picker #ngxDateTimePicker="ngx-bootstrap-datetime-picker"
-                             (select-time)="getDate($event)">
-        </ngx-datetime-picker>
+
+        <div class="col-lg-12">
+
+          <div class="row">
+            <div class="form-group">
+              <label class="control-label">Year selection</label>
+              <ngx-datetime-picker [mode]="CalendarSelectionMode.year"></ngx-datetime-picker>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label class="control-label">Month selection</label>
+              <ngx-datetime-picker [mode]="CalendarSelectionMode.month"></ngx-datetime-picker>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label class="control-label">Date selection</label>
+              <ngx-datetime-picker [mode]="CalendarSelectionMode.day"></ngx-datetime-picker>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label class="control-label">Full time selection</label>
+              <ngx-datetime-picker #ngxDateTimePicker="ngx-bootstrap-datetime-picker"
+                                   (select-time)="getDate($event)">
+              </ngx-datetime-picker>
+            </div>
+          </div>
+
+        </div>
+
       </div>
       <div class="panel-footer">
         <button class="btn btn-primary" (click)="clearSelection()">
