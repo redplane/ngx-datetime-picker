@@ -2,20 +2,18 @@
   <table class="table table-responsive table-condensed">
     <thead>
     <tr class="calendar-title">
-      <td>
-        <button class="btn btn-default btn-block"
+      <th colspan="5">
+        <button class="btn btn-default btn-sm btn-block"
                 (click)="clickTitle()">
           {{display(time)}}
         </button>
-      </td>
+      </th>
     </tr>
     </thead>
-  </table>
-  <table class="table table-responsive">
     <tbody class="time">
     <tr>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getHour() >= 23"
                 (click)="updateHour(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
@@ -23,7 +21,7 @@
       </td>
       <td></td>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getMinute() >= 59"
                 (click)="updateMinute(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
@@ -31,7 +29,7 @@
       </td>
       <td></td>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getSecond() >= 59"
                 (click)="updateSecond(1)">
           <span class="glyphicon glyphicon-chevron-up"></span>
@@ -80,7 +78,7 @@
     </tr>
     <tr>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getHour() < 1"
                 (click)="updateHour(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
@@ -88,7 +86,7 @@
       </td>
       <td></td>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getMinute() < 1"
                 (click)="updateMinute(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
@@ -96,7 +94,7 @@
       </td>
       <td></td>
       <td>
-        <button class="btn btn-block"
+        <button class="btn btn-block btn-sm"
                 [disabled]="time.getSecond() < 1"
                 (click)="updateSecond(-1)">
           <span class="glyphicon glyphicon-chevron-down"></span>
@@ -107,7 +105,7 @@
     <tfoot>
     <tr class="calendar-title">
       <td colspan="5">
-        <button class="btn btn-primary btn-block"
+        <button class="btn btn-primary btn-block btn-sm"
                 [disabled]="time.getSecond() < 1"
                 (click)="clickConfirm()">
           <span class="glyphicon glyphicon-check"></span>

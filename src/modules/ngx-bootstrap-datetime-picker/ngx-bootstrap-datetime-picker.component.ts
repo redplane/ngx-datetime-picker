@@ -40,6 +40,10 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
   @Input('mode')
   private mode: CalendarSelectionMode;
 
+  // Whether component is disabled or not.
+  @Input('disabled')
+  private bDisabled: boolean;
+
   // Enumeration reflection.
   private CalendarSelectionMode = CalendarSelectionMode;
 
@@ -128,6 +132,8 @@ export class NgxBootstrapDateTimePickerComponent implements OnInit {
   private clickYear(item: Date): void {
     // Set year.
     this.date.setFullYear(item.getFullYear());
+    this.date.setMonth(0, 1);
+    this.date.setHours(0, 0, 0, 0);
 
     // Only allowed to select year.
     if (this.mode == CalendarSelectionMode.year){

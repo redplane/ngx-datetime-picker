@@ -1,34 +1,29 @@
 <div class="ngx-day-selector">
   <table class="table table-condensed">
-    <tbody>
+    <thead>
     <tr class="calendar-title">
       <td class="arrow previous">
         <!--Decrease day by one-->
-        <button class="btn btn-block btn-default"
+        <button class="btn btn-block btn-default btn-sm"
                 [disabled]="month <= 0"
                 (click)="updateMonth(-1)">
           &#10094;
         </button>
       </td>
-      <td>
-        <button class="btn btn-info btn-block"
+      <td colspan="5">
+        <button class="btn btn-info btn-block btn-sm"
                 (click)="clickTitle()">
           {{monthsTitle[month]}} {{year}}
         </button>
       </td>
       <td class="arrow next">
-        <button class="btn btn-block btn-default"
+        <button class="btn btn-block btn-default btn-sm"
                 [disabled]="month >= 11"
                 (click)="updateMonth(1)">
           &#10095;
         </button>
       </td>
     </tr>
-    </tbody>
-  </table>
-
-  <table class="table table-condensed">
-    <thead>
     <tr class="weekdays">
       <th *ngFor="let title of dayTitles"
           class="text-center">
@@ -39,9 +34,9 @@
     <tbody class="days">
     <tr *ngFor="let week of getMatrixOfDays();">
       <td *ngFor="let day of week"
-          class="day" >
+          class="day">
         <button *ngIf="day != null"
-                class="btn btn-block btn-default"
+                class="btn btn-block btn-default btn-sm"
                 [class.btn-primary]="selected != null && selected.getFullYear() == day.getFullYear() && selected.getMonth() == day.getMonth() && selected.getDate() == day.getDate()"
                 (click)="select(day)">
           {{day.getDate()}}

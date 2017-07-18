@@ -92,7 +92,7 @@ export class NgxMonthSelectorComponent implements OnInit{
       iCounter++;
 
       // Initiate new row.
-      if (iCounter >= 3) {
+      if (iCounter >= 4) {
         iMonthRowIndex++;
         iCounter = 0;
       }

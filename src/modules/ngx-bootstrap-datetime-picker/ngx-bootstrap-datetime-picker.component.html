@@ -1,6 +1,7 @@
 <div #dropDownControl
      class="dropdown">
-  <div class="input-group dropdown-toggle"
+  <div class="input-group"
+       [class.dropdown-toggle]="!bDisabled"
        data-toggle="dropdown">
     <div class="form-control">
       <span *ngIf="selection != null">{{ format(selection) }}</span>
@@ -11,7 +12,8 @@
   </div>
   <div class="calendar dropdown-menu"
        [ngSwitch]="calendarSelectionMode"
-       (click)="clickDropDownMenu($event)">
+       (click)="clickDropDownMenu($event)"
+       *ngIf="!bDisabled">
 
     <!--Year selection-->
     <ngx-year-selector *ngSwitchCase="CalendarSelectionMode.year"
